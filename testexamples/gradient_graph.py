@@ -4,7 +4,7 @@ import colorsys
 import math
 import time
 
-from blinky import set_clear_on_exit, set_brightness, set_pixel, show
+from blinkt16 import set_clear_on_exit, set_brightness, set_pixel, show
 
 set_clear_on_exit()
 
