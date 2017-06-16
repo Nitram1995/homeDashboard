@@ -79,7 +79,7 @@ def show():
 
     i = 0
     for pixel in pixels:
-        DAT = 23 if (i / PIXELS_ON_BLINKT == 0) else 22 #Deciding the port for data
+        DAT = DAT1 if (i / PIXELS_ON_BLINKT == 0) else DAT2 #Deciding the port for data
 
         r, g, b, brightness = pixel
         _write_byte(0b11100000 | brightness, DAT)
