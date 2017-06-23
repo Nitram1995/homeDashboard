@@ -1,7 +1,7 @@
 import sys
-sys.path.append("..")
+sys.path.append("/home/pi/Git/homeDashboard")
 
-import LEDcontrol.py
+import LEDcontrol
 
 while True:
 	LEDcontrol.led_control(0, 1, 100, False, 100)

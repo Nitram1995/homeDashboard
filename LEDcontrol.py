@@ -24,7 +24,7 @@ pulseBlinkOn = True
 r = 255
 g = 255
 b = 255
-brightness = 0.05
+brightness = 0.1
 
 
 RED = [255, 0, 0]
@@ -67,6 +67,7 @@ def led_control(pit, flag, rpm_pct, lowFuel, hybrid=None):
 
 
 	#Udfyld rpm metode
+	rpm_led(rpm_pct)
 
 	#Udfyld hybrid metode
 	hybrid_led(hybrid)
@@ -94,7 +95,7 @@ def rpm_led(rpm_pct):
 		blinkt.set_pixel(9, RED[0], RED[1], RED[2], brightness)
 	if(rpm_pct >= RPM_CRITICAL):
 		for z in range(10, 15):
-			blinkt.set_pixel(x, BLUE[0], BLUE[1], BLUE[2], brightness)
+			blinkt.set_pixel(z, BLUE[0], BLUE[1], BLUE[2], brightness)
 
 
 def hybrid_led(hybrid):
@@ -105,13 +106,13 @@ def hybrid_led(hybrid):
 	else:
 		x = int(ceil((hybrid / 20.0)))
 
-	print x
-
 	for z in range(HYBRID_START_POS, x + 1):
 		blinkt.set_pixel(z, GREEN[0], GREEN[1], GREEN[2], brightness)
 
-	for z in range(x + 1, HYBRID_END_POS + 1):
+	for z in range(x + 1, (HYBRID_END_POS + 1)):
 		blinkt.set_pixel(z, 0, 0, 0, 0)
+
+
 
 def flag_led(flag):
 	if flag == 1:
@@ -127,6 +128,4 @@ def flag_led(flag):
 def car_warning_led(lowFuel):
 	if lowFuel == True:
 		blinkt.set_pixel(FUEL_WARNING_POS, RED[0], RED[1], RED[2], brightness)
-	else:
-		blinkt.set_pixel(FUEL_WARNING_POS, 0, 0, 0, 0)
 
