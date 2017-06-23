@@ -51,6 +51,7 @@ def led_control(pit, flag, rpm_pct, lowFuel, hybrid=None):
 
 
 	newTime = time.time()
+	blinkt.clear() #Clears LED buffer
 
 	if newTime >= (lastSlowBlink + SLOW_BLINK):
 		slowBlinkOn = not slowBlinkOn
@@ -66,6 +67,11 @@ def led_control(pit, flag, rpm_pct, lowFuel, hybrid=None):
 		lastPulseBlink = newTime
 
 
+	'''
+	The sooner an 'led' method is called the lower priority it has.
+	The later ones owerwrite the earlier ones.
+	'''
+
 	#Udfyld rpm metode
 	rpm_led(rpm_pct)
 
@@ -79,8 +85,9 @@ def led_control(pit, flag, rpm_pct, lowFuel, hybrid=None):
 	car_warning_led(lowFuel)
 
 	#Udfyld pit metode
+	pit_lim_led(pit)
 
-	blinkt.show()
+	blinkt.show() #Sends signal to LEDs
 	
 	currTime = newTime
 
@@ -129,3 +136,17 @@ def car_warning_led(lowFuel):
 	if lowFuel == True:
 		blinkt.set_pixel(FUEL_WARNING_POS, RED[0], RED[1], RED[2], brightness)
 
+
+def pit_lim_led(pitLimiterOn):
+	if pitLimiterOn:
+		for z in range(blinkt.NUM_PIXELS):
+			if (z % 2) == 0:
+				if slowBlinkOn:
+					blinkt.set_pixel(z, RED[0], RED[1], RED[2], brightness)
+				else:
+					blinkt.set_pixel(z, 0, 0, 0, 0)
+			else:
+				if not slowBlinkOn:
+					blinkt.set_pixel(z, RED[0], RED[1], RED[2], brightness)
+				else:
+					blinkt.set_pixel(z, 0, 0, 0, 0)
