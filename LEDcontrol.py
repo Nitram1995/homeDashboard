@@ -92,6 +92,19 @@ def led_control(pit, flag, rpm_pct, lowFuel, hybrid=None):
 	currTime = newTime
 
 def rpm_led(rpm_pct):
+	#Green LEDs
+	if(rpm_pct >= (RPM_CRITICAL - 18)):
+		blinkt.set_pixel(6, RED[0], RED[1], RED[2], brightness)
+	if(rpm_pct >= (RPM_CRITICAL - 16)):
+		blinkt.set_pixel(6, RED[0], RED[1], RED[2], brightness)
+	if(rpm_pct >= (RPM_CRITICAL - 14)):
+		blinkt.set_pixel(6, RED[0], RED[1], RED[2], brightness)
+	if(rpm_pct >= (RPM_CRITICAL - 12)):
+		blinkt.set_pixel(6, RED[0], RED[1], RED[2], brightness)
+	if(rpm_pct >= (RPM_CRITICAL - 10)):
+		blinkt.set_pixel(6, RED[0], RED[1], RED[2], brightness)
+	
+	#Red LEDs
 	if(rpm_pct >= (RPM_CRITICAL - 8)):
 		blinkt.set_pixel(6, RED[0], RED[1], RED[2], brightness)
 	if(rpm_pct >= (RPM_CRITICAL - 6)):
@@ -100,7 +113,9 @@ def rpm_led(rpm_pct):
 		blinkt.set_pixel(8, RED[0], RED[1], RED[2], brightness)
 	if(rpm_pct >= (RPM_CRITICAL - 2)):
 		blinkt.set_pixel(9, RED[0], RED[1], RED[2], brightness)
-	if(rpm_pct >= RPM_CRITICAL):
+	
+	#Blue LEDs
+	if(rpm_pct >= RPM_CRITICAL): 
 		for z in range(10, 15):
 			blinkt.set_pixel(z, BLUE[0], BLUE[1], BLUE[2], brightness)
 
