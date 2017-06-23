@@ -19,8 +19,6 @@ medBlinkOn = True
 fastBlinkOn = True
 pulseBlinkOn = True
 
-
-
 r = 255
 g = 255
 b = 255
@@ -30,6 +28,7 @@ brightness = 0.1
 RED = [255, 0, 0]
 GREEN = [0, 255, 0]
 BLUE = [0, 0, 255]
+WHITE = [255, 255, 255]
 
 RPM_CRITICAL = 95
 
@@ -76,7 +75,8 @@ def led_control(pit, flag, rpm_pct, lowFuel, hybrid=None):
 	rpm_led(rpm_pct)
 
 	#Udfyld hybrid metode
-	hybrid_led(hybrid)
+	if hybrid != None:
+		hybrid_led(hybrid)
 
 	#Udfyld flag metode
 	flag_led(flag)
