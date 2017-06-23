@@ -48,7 +48,6 @@ def led_control(pit, flag, rpm_pct, lowFuel, hybrid=None):
 	global lastFastBlink
 	global lastPulseBlink
 
-
 	newTime = time.time()
 	blinkt.clear() #Clears LED buffer
 
@@ -94,15 +93,15 @@ def led_control(pit, flag, rpm_pct, lowFuel, hybrid=None):
 def rpm_led(rpm_pct):
 	#Green LEDs
 	if(rpm_pct >= (RPM_CRITICAL - 18)):
-		blinkt.set_pixel(6, RED[0], RED[1], RED[2], brightness)
+		blinkt.set_pixel(1, GREEN[0], GREEN[1], GREEN[2], brightness)
 	if(rpm_pct >= (RPM_CRITICAL - 16)):
-		blinkt.set_pixel(6, RED[0], RED[1], RED[2], brightness)
+		blinkt.set_pixel(2, GREEN[0], GREEN[1], GREEN[2], brightness)
 	if(rpm_pct >= (RPM_CRITICAL - 14)):
-		blinkt.set_pixel(6, RED[0], RED[1], RED[2], brightness)
+		blinkt.set_pixel(3, GREEN[0], GREEN[1], GREEN[2], brightness)
 	if(rpm_pct >= (RPM_CRITICAL - 12)):
-		blinkt.set_pixel(6, RED[0], RED[1], RED[2], brightness)
+		blinkt.set_pixel(4, GREEN[0], GREEN[1], GREEN[2], brightness)
 	if(rpm_pct >= (RPM_CRITICAL - 10)):
-		blinkt.set_pixel(6, RED[0], RED[1], RED[2], brightness)
+		blinkt.set_pixel(5, GREEN[0], GREEN[1], GREEN[2], brightness)
 	
 	#Red LEDs
 	if(rpm_pct >= (RPM_CRITICAL - 8)):
@@ -121,6 +120,7 @@ def rpm_led(rpm_pct):
 
 
 def hybrid_led(hybrid):
+
 	if hybrid == 100:
 		x = 5
 	elif hybrid == 0:

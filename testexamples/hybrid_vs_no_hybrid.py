@@ -4,9 +4,9 @@ from LEDcontrol import led_control
 import time
 
 while True:
-	led_control(0, 1, 100, False, 100)
+	led_control(0, 0, 100, False, 100)
 	time.sleep(1)
-	led_control(0, 1, 100, True, 0)
+	led_control(0, 0, 100, True, 0)
 	time.sleep(1)
-	led_control(0, 1, 88, False)
+	led_control(0, 0, 92, False)
 	time.sleep(1)
