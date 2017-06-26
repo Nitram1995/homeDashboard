@@ -1,1 +1,1 @@
-'blinkt16.py' must be placed in the following path on the PI: '/usr/lib/python2.7/dist-packages/blinkt16.py'
+Python scripts only work when placed in the directory which is found in the modules files.
