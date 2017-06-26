@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+import sys
+sys.path.append("/home/pi/Git/homeDashboard/modules")
+
 import colorsys
 import math
 import time

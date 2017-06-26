@@ -1,6 +1,7 @@
 import sys
-sys.path.append("/home/pi/Git/homeDashboard")
+sys.path.append("/home/pi/Git/homeDashboard/modules")
 
+import blinkt16 as blinkt
 from math import ceil
 import time
 

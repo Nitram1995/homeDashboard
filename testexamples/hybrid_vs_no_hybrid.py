@@ -1,5 +1,6 @@
 import sys
-sys.path.append("/home/pi/Git/homeDashboard")
+sys.path.append("/home/pi/Git/homeDashboard/modules")
+
 from LEDcontrol import led_control
 import time
 
