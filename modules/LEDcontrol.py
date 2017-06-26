@@ -32,6 +32,7 @@ RED = [255, 0, 0]
 GREEN = [0, 255, 0]
 BLUE = [0, 0, 255]
 WHITE = [255, 255, 255]
+PURPLE = [138, 43, 226]
 
 RPM_CRITICAL = 95
 
@@ -40,7 +41,8 @@ HYBRID_END_POS = 5
 FUEL_WARNING_POS = 6
 FLAG_POS = [0, 15]
 
-def led_control(pit, flag, rpm_pct, lowFuel, hybrid=None):
+def led_control(pit, flag, rpm_pct, lowFuel, 
+				flLock, frLock, hybrid=None):
 	global currTime
 	global slowBlinkOn
 	global medBlinkOn
@@ -84,7 +86,7 @@ def led_control(pit, flag, rpm_pct, lowFuel, hybrid=None):
 	flag_led(flag)
 
 	#Udfyld warnings metode
-	car_warning_led(lowFuel)
+	car_warning_led(lowFuel, flLock, frLock)
 
 	#Udfyld pit metode
 	pit_lim_led(pit)
@@ -150,9 +152,33 @@ def flag_led(flag):
 
 
 
-def car_warning_led(lowFuel):
+def car_warning_led(lowFuel, flLock, frLock):
+	#FUEL
 	if lowFuel == True:
 		blinkt.set_pixel(FUEL_WARNING_POS, RED[0], RED[1], RED[2], brightness)
+
+	
+	#Tire locking
+	''' 
+		1 = almost locked
+		2 = fully locked
+	'''
+	if flLock == 1:
+		blinkt.set_pixel(FLAG_POS[0], PURPLE[0], PURPLE[1], PURPLE[2], brightness)
+	else if flLock == 2:
+		if pulseBlinkOn:
+			blinkt.set_pixel(FLAG_POS[0], PURPLE[0], PURPLE[1], PURPLE[2], (brightness + 0.1))
+		else:
+			blinkt.set_pixel(FLAG_POS[0], 0, 0, 0, 0)
+
+	if frLock == 1:
+		blinkt.set_pixel(FLAG_POS[1], PURPLE[0], PURPLE[1], PURPLE[2], brightness)
+	else if frLock == 2:
+		if pulseBlinkOn:
+			blinkt.set_pixel(FLAG_POS[1], PURPLE[0], PURPLE[1], PURPLE[2], (brightness + 0.1))
+		else:
+			blinkt.set_pixel(FLAG_POS[1], 0, 0, 0, 0)
+
 
 
 def pit_lim_led(pitLimiterOn):
