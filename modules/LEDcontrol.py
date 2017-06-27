@@ -7,10 +7,10 @@ import time
 
 currTime = time.time()
 
-SLOW_BLINK = 1.0
-MED_BLINK = 0.5
-FAST_BLINK = 0.25
-PULSE_BLINK = 0.1
+SLOW_BLINK = 0.6
+MED_BLINK = 0.3
+FAST_BLINK = 0.15
+PULSE_BLINK = 0.05
 
 lastSlowBlink = currTime
 lastMedBlink = currTime
@@ -32,7 +32,7 @@ RED = [255, 0, 0]
 GREEN = [0, 255, 0]
 BLUE = [0, 0, 255]
 WHITE = [255, 255, 255]
-PURPLE = [138, 43, 226]
+PURPLE = [200, 0, 128]
 
 RPM_CRITICAL = 95
 
@@ -165,7 +165,7 @@ def car_warning_led(lowFuel, flLock, frLock):
 	'''
 	if flLock == 1:
 		blinkt.set_pixel(FLAG_POS[0], PURPLE[0], PURPLE[1], PURPLE[2], brightness)
-	else if flLock == 2:
+	elif flLock == 2:
 		if pulseBlinkOn:
 			blinkt.set_pixel(FLAG_POS[0], PURPLE[0], PURPLE[1], PURPLE[2], (brightness + 0.1))
 		else:
@@ -173,7 +173,7 @@ def car_warning_led(lowFuel, flLock, frLock):
 
 	if frLock == 1:
 		blinkt.set_pixel(FLAG_POS[1], PURPLE[0], PURPLE[1], PURPLE[2], brightness)
-	else if frLock == 2:
+	elif frLock == 2:
 		if pulseBlinkOn:
 			blinkt.set_pixel(FLAG_POS[1], PURPLE[0], PURPLE[1], PURPLE[2], (brightness + 0.1))
 		else:
