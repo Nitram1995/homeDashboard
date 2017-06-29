@@ -71,8 +71,8 @@ while 1:
         closeapp(udppackets, (ts - starttime).seconds)
     try:
     	d = s.recvfrom(buf)
-    except:
-        continue
+    except socket.error:
+	continue
     data = d[0]
     addr = d[1]
     #if not data:
