@@ -70,9 +70,9 @@ while 1:
     if args.seconds is not None and (ts - starttime).seconds >= int(args.seconds):
         closeapp(udppackets, (ts - starttime).seconds)
     try:
-        d = s.recvfrom(buf)
-    except BlockingIOError:
-        continue
+    	d = s.recvfrom(buf)
+    except socket.error:
+	continue
     data = d[0]
     addr = d[1]
     #if not data:
