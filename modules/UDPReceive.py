@@ -8,8 +8,6 @@ import sys
 import signal
 import time
 
-import os
-
 def closeapp(nbpkt,secs):
     print('%s packets captured in %s seconds. Stopping capture' % (nbpkt, secs))
     f.flush()
