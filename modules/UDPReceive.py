@@ -8,6 +8,8 @@ import sys
 import signal
 import time
 
+import os
+
 def closeapp(nbpkt,secs):
     print('%s packets captured in %s seconds. Stopping capture' % (nbpkt, secs))
     f.flush()
@@ -70,8 +72,8 @@ while 1:
     if args.seconds is not None and (ts - starttime).seconds >= int(args.seconds):
         closeapp(udppackets, (ts - starttime).seconds)
     try:
-        d = s.recvfrom(buf)
-    except BlockingIOError:
+    	d = s.recvfrom(buf)
+    except:
         continue
     data = d[0]
     addr = d[1]
