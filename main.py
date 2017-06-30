@@ -5,7 +5,6 @@ import game
 import udp_client as UDP
 
 PCARS = game.GameUDP('', 5606, 1367)
-PCARS2 = game.GameUDP('', 5606, 12)
 
 def setup_game_mode(currGame):
 	UDP.setup_client(currGame.host, currGame.port, currGame.exp_length)
