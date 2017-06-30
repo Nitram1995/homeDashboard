@@ -21,5 +21,5 @@ while True:
 		setup_game_mode(PCARS)
 		isItSetupYet = True
 
-	data = udp.get_udp_data()
-    print (ord(data[125]) << 8) + ord(data[124]) #Prints current rpm to terminal
+	data = UDP.get_udp_data()
+    	print (ord(data[125]) << 8) + ord(data[124]) #Prints current rpm to terminal
