@@ -12,10 +12,11 @@ def setup_client(newHost, newPort, newExpectedLength):
 	global s	
 
 	global host
-	host  = newHost
 	global port 
-	port = newPort
 	global exp_length 
+
+	host  = newHost
+	port = newPort
 	exp_length = newExpectedLength
 
 	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)	
