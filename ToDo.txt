@@ -1,1 +1,6 @@
--Test parsing af gear fra PCars_parser
+-Forbered system til flere spil
+	-Funktionspointere eller lign
+
+-Interupts på knapper
+
+-Wheel lock

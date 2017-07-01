@@ -29,6 +29,7 @@ brightness = 0.1
 
 
 RED = [255, 0, 0]
+YELLOW = [0, 0, 0]
 GREEN = [0, 255, 0]
 BLUE = [0, 0, 255]
 WHITE = [255, 255, 255]
@@ -125,7 +126,6 @@ def rpm_led(rpm_pct):
 
 
 def hybrid_led(hybrid):
-
 	if hybrid == 100:
 		x = 5
 	elif hybrid == 0:
@@ -142,13 +142,25 @@ def hybrid_led(hybrid):
 
 
 def flag_led(flag):
-	if flag == 1:
+	if flag != "none":
+		
+		if flag == "green":
+			color = GREEN
+		elif flag == "yellow":
+			color = YELLOW
+		elif flag == "blue":
+			color = BLUE
+		elif flag == "red":
+			color = RED
+		else:
+			color = WHITE
+
 		if fastBlinkOn:
 			for x in FLAG_POS:
-				blinkt.set_pixel(x, RED[0], RED[1], RED[2], brightness)
+				blinkt.set_pixel(x, color[0], color[1], color[2], brightness)
 		else:
 			for x in FLAG_POS:
-				blinkt.set_pixel(x, RED[0], RED[1], RED[2], 0)
+				blinkt.set_pixel(x, color[0], color[1], color[2], 0)
 
 
 

@@ -9,13 +9,13 @@ class GameData:
 	RPM = -1
 	maxRPM = -1
 	speed = -1
-	gear = 'Z'
+	gear = 'E'
 	hybrid_pct = -1
 	oilTemp = -1
 	waterTemp = -1
 	fuel = -1
 
-	flag = -1
+	flag = 'none'
 
 	#Car settings
 	headlightsActive = False
