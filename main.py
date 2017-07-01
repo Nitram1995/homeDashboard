@@ -25,9 +25,9 @@ while True:
 		gameModeIsSetup = True
 
 	data = UDP.get_udp_data()
-    dataParser.PCars_parser(data, telemetry)
+	dataParser.PCars_parser(data, telemetry)
 
-    lowfuel = (telemetry.fuel < 100) #Should be changed later
+	lowfuel = (telemetry.fuel < 10) #Should be changed later
 
-    print telemetry.RPM, telemetry.headlightsActive, telemetry.flag
-    LED.led_control(telemetry.pitLimiterActive, telemetry.flag, telemetry.RPM_pct(), lowfuel, 0, 0)
+    	print telemetry.gear, telemetry.RPM, telemetry.headlightsActive, telemetry.flag
+    	LED.led_control(telemetry.pitLimiterActive, telemetry.flag, telemetry.RPM_pct(), lowfuel, 0, 0)

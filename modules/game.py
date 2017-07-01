@@ -9,7 +9,7 @@ class GameData:
 	RPM = -1
 	maxRPM = -1
 	speed = -1
-	gear = 'Ø'
+	gear = 'Z'
 	hybrid_pct = -1
 	oilTemp = -1
 	waterTemp = -1
@@ -27,5 +27,8 @@ class GameData:
 	tractionControlOn = False
 
 	
-	def RPM_pct:
-		reutrn (RPM * 100) / maxRPM
+	def RPM_pct(self):
+		if self.maxRPM != 0:
+			return (self.RPM * 100) / self.maxRPM
+		else:
+			return 0

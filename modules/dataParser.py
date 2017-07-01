@@ -18,17 +18,17 @@ def PCars_parser(data, gData):
 	gData.oilTemp = struct.unpack("<h", data[100:102])
 	gData.waterTemp = struct.unpack("<h", data[104:106])
 
-	gData.flag = struct.unpack("<B", data[98])
+	gData.flag = struct.unpack("<B", data[98])[0]
 
-	gearInt = (struct.unpack("<b", data[128])[0] >> 4) #For highest bits are current gear
-		if(gearInt == 15):
-			gData.gear = 'R'
-		elif(gearInt == 0):
-			gData.gear = 'N'
-		else:
-			gData.gear = struct.pack("=c", gearInt) #Packs the byte (int) as a char
+	gearInt = (struct.unpack("<b", data[128])[0] & 0x0f) #For highest bits are current gear
+	if(gearInt == 15):
+		gData.gear = 'R'
+	elif(gearInt == 0):
+		gData.gear = 'N'
+	else:
+		gData.gear = str(gearInt) #Packs the byte (int) as a char
 
-	carFlags = struct.unpack("<B", data[110])
+	carFlags = struct.unpack("<B", data[110])[0]
 
 	gData.headlightsActive = 		carFlags & 0x01
 	gData.engineWarningActive = 	carFlags & 0x04
