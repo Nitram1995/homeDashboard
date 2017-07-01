@@ -2,7 +2,9 @@ import sys
 sys.path.append("/home/pi/Git/homeDashboard/modules")
 
 import game
+import dataParser
 import udp_client as UDP
+import LEDcontrol as LED
 
 PCARS = game.GameUDP('', 5606, 1367)
 
@@ -12,13 +14,20 @@ def setup_game_mode(currGame):
 
 
 #Main loop
-isItSetupYet = False
+gameModeIsSetup = False
+telemetry = game.GameData()
+
 while True:
 
 	#Decide on which game
-	if isItSetupYet != True:
-		setup_game_mode(PCARS)
-		isItSetupYet = True
+	if gameModeIsSetup != True:
+		setup_game_mode(PCARS) #Should be setup later to take multiple games
+		gameModeIsSetup = True
 
 	data = UDP.get_udp_data()
-    	print (ord(data[125]) << 8) + ord(data[124]) #Prints current rpm to terminal
+    dataParser.PCars_parser(data, telemetry)
+
+    lowfuel = (telemetry.fuel < 100) #Should be changed later
+
+    print telemetry.RPM, telemetry.headlightsActive, telemetry.flag
+    LED.led_control(telemetry.pitLimiterActive, telemetry.flag, telemetry.RPM_pct(), lowfuel, 0, 0)
