@@ -14,6 +14,7 @@ class GameData:
 	oilTemp = -1
 	waterTemp = -1
 	fuel = -1
+	lowFuel = False
 
 	flag = 'none'
 

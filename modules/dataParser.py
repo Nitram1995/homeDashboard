@@ -14,6 +14,8 @@ def PCars_parser(data, gData):
 	gData.speed = struct.unpack("<f", data[120])
 	'''
 	gData.fuel, msSpeed, gData.RPM, gData.maxRPM = struct.unpack("<ffHH", data[116:128]) #Equvilent to the  lines above
+	gData.lowfuel = (gData.fuel < 10) #Should be changed later
+
 
 	gData.oilTemp = struct.unpack("<h", data[100:102])
 	gData.waterTemp = struct.unpack("<h", data[104:106])
