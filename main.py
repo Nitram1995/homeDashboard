@@ -29,5 +29,5 @@ while True:
 
 	lowfuel = (telemetry.fuel < 10) #Should be changed later
 
-	print telemetry.gear, telemetry.RPM, telemetry.headlightsActive, telemetry.flag
+	print (telemetry.gear, telemetry.RPM, telemetry.headlightsActive, telemetry.flag)
 	LED.led_control(telemetry)

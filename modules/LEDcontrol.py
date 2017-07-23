@@ -84,7 +84,7 @@ def led_control(gameData):
 
 	flag_led(gameData.flag)
 
-	car_warning_led(gameData.lowFuel) ''', flLock, frLock)'''
+	car_warning_led(gameData.lowFuel) #, flLock, frLock)
 
 	pit_lim_led(gameData.pitLimiterActive)
 
@@ -160,7 +160,7 @@ def flag_led(flag):
 
 
 
-def car_warning_led(lowFuel): ''', flLock, frLock):'''
+def car_warning_led(lowFuel): #, flLock, frLock):
 	#FUEL
 	if lowFuel == True:
 		blinkt.set_pixel(FUEL_WARNING_POS, RED[0], RED[1], RED[2], brightness)
