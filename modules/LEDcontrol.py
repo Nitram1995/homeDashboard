@@ -77,14 +77,14 @@ def led_control(gameData):
 	The later ones owerwrite the earlier ones.
 	'''
 
-	rpm_led(gameData.RPM_pct)
+	rpm_led(gameData.RPM_pct())
 
 	if gameData.hybrid_pct != -1:
 		hybrid_led(gameData.hybrid_pct)
 
 	flag_led(gameData.flag)
 
-	car_warning_led(gameData.lowFuel) #, flLock, frLock)
+	car_warning_led(gameData.lowFuel, gameData.FL_locking_state(), gameData.FR_locking_state())
 
 	pit_lim_led(gameData.pitLimiterActive)
 
@@ -160,7 +160,7 @@ def flag_led(flag):
 
 
 
-def car_warning_led(lowFuel): #, flLock, frLock):
+def car_warning_led(lowFuel, flLock, frLock):
 	#FUEL
 	if lowFuel == True:
 		blinkt.set_pixel(FUEL_WARNING_POS, RED[0], RED[1], RED[2], brightness)
@@ -172,7 +172,7 @@ def car_warning_led(lowFuel): #, flLock, frLock):
 		2 = fully locked
 	'''
 	
-	'''
+	
 	if flLock == 1:
 		blinkt.set_pixel(FLAG_POS[0], PURPLE[0], PURPLE[1], PURPLE[2], brightness)
 	elif flLock == 2:
@@ -188,7 +188,7 @@ def car_warning_led(lowFuel): #, flLock, frLock):
 			blinkt.set_pixel(FLAG_POS[1], PURPLE[0], PURPLE[1], PURPLE[2], (brightness + 0.1))
 		else:
 			blinkt.set_pixel(FLAG_POS[1], 0, 0, 0, 0)
-	'''
+	
 
 
 def pit_lim_led(pitLimiterOn):
