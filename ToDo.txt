@@ -2,5 +2,3 @@
 	-Funktionspointere eller lign
 
 -Interupts på knapper
-
--Wheel lock
