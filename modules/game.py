@@ -14,7 +14,6 @@ class GameData:
 	oilTemp = -1
 	waterTemp = -1
 	fuel = -1
-	lowFuel = False
 
 	#Wheel state
 	FL_tire_rps = -1
@@ -45,6 +44,12 @@ class GameData:
 			return (self.RPM * 100) / self.maxRPM
 		else:
 			return 0
+
+	def lowFuel(self):
+		if(self.fuel < 10):
+			return True
+		else:
+			return False
 
 	def FL_locking_state(self):
 		return self.front_wheel_lock_state(self.FL_tire_rps)

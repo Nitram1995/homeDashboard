@@ -27,9 +27,7 @@ while True:
 	data = UDP.get_udp_data()
 	dataParser.PCars_parser(data, telemetry)
 
-	lowfuel = (telemetry.fuel < 10) #Should be changed later
-
 	#print (telemetry.gear, telemetry.RPM, telemetry.headlightsActive, telemetry.flag)
-	if(telemetry.brake > 0):
-		print(telemetry.brake, telemetry.FL_tire_rps, telemetry.FL_locking_state(), telemetry.RPM_pct())
+	#if(telemetry.brake > 0):
+		#print(telemetry.brake, telemetry.FL_tire_rps, telemetry.FL_locking_state(), telemetry.RPM_pct())
 	LED.led_control(telemetry)
