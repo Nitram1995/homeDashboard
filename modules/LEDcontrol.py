@@ -29,6 +29,7 @@ brightness = 0.1
 
 
 RED = [255, 0, 0]
+YELLOW = [0, 0, 0]
 GREEN = [0, 255, 0]
 BLUE = [0, 0, 255]
 WHITE = [255, 255, 255]
@@ -41,8 +42,9 @@ HYBRID_END_POS = 5
 FUEL_WARNING_POS = 6
 FLAG_POS = [0, 15]
 
-def led_control(pit, flag, rpm_pct, lowFuel, 
-				flLock, frLock, hybrid=None):
+def led_control(gameData):
+	'''(pit, flag, rpm_pct, lowFuel, 
+				flLock, frLock, hybrid=None):'''
 	global currTime
 	global slowBlinkOn
 	global medBlinkOn
@@ -75,21 +77,16 @@ def led_control(pit, flag, rpm_pct, lowFuel,
 	The later ones owerwrite the earlier ones.
 	'''
 
-	#Udfyld rpm metode
-	rpm_led(rpm_pct)
+	rpm_led(gameData.RPM_pct())
 
-	#Udfyld hybrid metode
-	if hybrid != None:
-		hybrid_led(hybrid)
+	if gameData.hybrid_pct != -1:
+		hybrid_led(gameData.hybrid_pct)
 
-	#Udfyld flag metode
-	flag_led(flag)
+	flag_led(gameData.flag)
 
-	#Udfyld warnings metode
-	car_warning_led(lowFuel, flLock, frLock)
+	car_warning_led(gameData.lowFuel, gameData.FL_locking_state(), gameData.FR_locking_state())
 
-	#Udfyld pit metode
-	pit_lim_led(pit)
+	pit_lim_led(gameData.pitLimiterActive)
 
 	blinkt.show() #Sends signal to LEDs
 	
@@ -125,7 +122,6 @@ def rpm_led(rpm_pct):
 
 
 def hybrid_led(hybrid):
-
 	if hybrid == 100:
 		x = 5
 	elif hybrid == 0:
@@ -142,13 +138,25 @@ def hybrid_led(hybrid):
 
 
 def flag_led(flag):
-	if flag == 1:
+	if flag != "none":
+		
+		if flag == "green":
+			color = GREEN
+		elif flag == "yellow":
+			color = YELLOW
+		elif flag == "blue":
+			color = BLUE
+		elif flag == "red":
+			color = RED
+		else:
+			color = WHITE
+
 		if fastBlinkOn:
 			for x in FLAG_POS:
-				blinkt.set_pixel(x, RED[0], RED[1], RED[2], brightness)
+				blinkt.set_pixel(x, color[0], color[1], color[2], brightness)
 		else:
 			for x in FLAG_POS:
-				blinkt.set_pixel(x, RED[0], RED[1], RED[2], 0)
+				blinkt.set_pixel(x, color[0], color[1], color[2], 0)
 
 
 
@@ -163,6 +171,8 @@ def car_warning_led(lowFuel, flLock, frLock):
 		1 = almost locked
 		2 = fully locked
 	'''
+	
+	
 	if flLock == 1:
 		blinkt.set_pixel(FLAG_POS[0], PURPLE[0], PURPLE[1], PURPLE[2], brightness)
 	elif flLock == 2:
@@ -178,7 +188,7 @@ def car_warning_led(lowFuel, flLock, frLock):
 			blinkt.set_pixel(FLAG_POS[1], PURPLE[0], PURPLE[1], PURPLE[2], (brightness + 0.1))
 		else:
 			blinkt.set_pixel(FLAG_POS[1], 0, 0, 0, 0)
-
+	
 
 
 def pit_lim_led(pitLimiterOn):

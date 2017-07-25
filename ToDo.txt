@@ -1,0 +1,4 @@
+-Forbered system til flere spil
+	-Funktionspointere eller lign
+
+-Interupts på knapper
