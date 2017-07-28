@@ -30,4 +30,5 @@ while True:
 	#print (telemetry.gear, telemetry.RPM, telemetry.headlightsActive, telemetry.flag)
 	#if(telemetry.brake > 0):
 		#print(telemetry.brake, telemetry.FL_tire_rps, telemetry.FL_locking_state(), telemetry.RPM_pct())
+	print(telemetry.hybrid_pct)
 	LED.led_control(telemetry)
