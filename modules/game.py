@@ -50,11 +50,23 @@ class GameData:
 		else:
 			return 0
 
+	def FL_tire_temp_c(self):
+		return self.kelvin_to_celsius_int(self.FL_tire_temp)
+	def FR_tire_temp_c(self):
+		return self.kelvin_to_celsius_int(self.FR_tire_temp)
+	def RL_tire_temp_c(self):
+		return self.kelvin_to_celsius_int(self.RL_tire_temp)
+	def RR_tire_temp_c(self):
+		return self.kelvin_to_celsius_int(self.RR_tire_temp)
+
+	def kelvin_to_celsius_int(self, temp):
+		return temp - 273
+
 	def fuel_laps_remaining(self):
-		return fuel / avr_fuel
+		return self.fuel / self.avr_fuel
 
 	def lowFuel(self):
-		if(fuelLapsLeft < 2):
+		if(fuel_laps_remaining() < 2):
 			return True
 		else:
 			return False
@@ -68,14 +80,14 @@ class GameData:
 	def front_wheel_lock_state(self, front_wheel_rps):
 		avr_rear_rps = (self.RL_tire_rps + self.RR_tire_rps) / 2
 		if(self.brake <= 0):
-                        return 0
-                elif(avr_rear_rps < 15):
-                        return 0
-                else:
-                        if(front_wheel_rps < 1):
-                                return 2
-                        elif(avr_rear_rps - front_wheel_rps > 20):
-                                return 1
-                return 0
+			return 0
+		elif(avr_rear_rps < 15):
+			return 0
+		else:
+			if(front_wheel_rps < 1):
+				return 2
+			elif(avr_rear_rps - front_wheel_rps > 20):
+				return 1
+		return 0
 
 			
