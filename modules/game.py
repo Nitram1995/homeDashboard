@@ -14,6 +14,7 @@ class GameData:
 	oilTemp = -1
 	waterTemp = -1
 	fuel = -1
+	maxFuel = -1
 	avr_fuel = -1
 	aero_damage = -1
 	engine_damage = -1
@@ -49,6 +50,9 @@ class GameData:
 			return (self.RPM * 100) / self.maxRPM
 		else:
 			return 0
+
+	def curr_fuel(self):
+		return self.maxFuel * self.fuel
 
 	def FL_tire_temp_c(self):
 		return self.kelvin_to_celsius_int(self.FL_tire_temp)

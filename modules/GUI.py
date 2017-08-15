@@ -11,6 +11,8 @@ main_font = "helvetica"
 
 root = tk.Tk()
 
+gear_num = tk.StringVar()
+
 fl_tire_temp = tk.IntVar()
 fr_tire_temp = tk.IntVar()
 rl_tire_temp = tk.IntVar()
@@ -21,10 +23,12 @@ engine_dmg = tk.IntVar()
 water_temp = tk.IntVar()
 oil_temp = tk.IntVar()
 
-fuel = tk.DoubleVar()
-fuel_laps_remain = tk.DoubleVar()
+fuel = tk.StringVar()
+fuel_laps_remain = tk.StringVar()
 
 def update_variables(gData):
+	gear_num.set(gData.gear)
+
 	fl_tire_temp.set(gData.FL_tire_temp_c())
 	fr_tire_temp.set(gData.FR_tire_temp_c())
 	rl_tire_temp.set(gData.RL_tire_temp_c())
@@ -36,7 +40,7 @@ def update_variables(gData):
 	aero_dmg.set(gData.aero_damage)
 	engine_dmg.set(gData.engine_damage)
 
-	fuel.set(gData.fuel)
+	fuel.set('{:.2f}'.format(gData.curr_fuel()))
 
 def quit(event):
 	import sys
@@ -74,6 +78,9 @@ class screenPCars:
 				#lbl.grid(row=row_index, column=col_index, sticky='nsew')
 
 		#Setting up labels
+		lbl_gearNum_header = tk.Label(frame, text="Gear", font=self.font, bg=bg_color, fg=header_color, borderwidth=2)
+		lbl_gearNum = tk.Label(frame, textvariable=gear_num, font=self.font, bg=bg_color, fg=txt_color, borderwidth=1, relief=self.relief)
+
 		lbl_water_header = tk.Label(frame, text="Water T", font=self.font, bg=bg_color, fg=header_color, borderwidth=2)
 		lbl_water_temp = tk.Label(frame, textvariable=water_temp, font=self.font, bg=bg_color, fg=txt_color, borderwidth=1, relief=self.relief)
 		lbl_oil_header = tk.Label(frame, text="Oil T", font=self.font, bg=bg_color, fg=header_color, borderwidth=2)
@@ -97,6 +104,9 @@ class screenPCars:
 
 
 		#Gridding the labels
+		lbl_gearNum_header.grid(row=0, column=8, columnspan=2, sticky='nsew')
+		lbl_gearNum.grid(row=1, column=8, rowspan=5, columnspan=2, sticky='nsew')
+
 		lbl_water_header.grid(row=0, column=13, columnspan=3, sticky='nsew')
 		lbl_water_temp.grid(row=1, column=13, rowspan=2, columnspan=3, sticky='nsew')
 		lbl_oil_header.grid(row=3, column=13, columnspan=3, sticky='nsew')
@@ -117,8 +127,8 @@ class screenPCars:
 		lbl_rl_tyre_temp.grid(row=8, column=10, rowspan=1, columnspan=3, sticky='nsew')
 		lbl_rr_tyre_temp.grid(row=8, column=13, rowspan=1, columnspan=3, sticky='nsew')
 
-		self.labels = [lbl_water_header, lbl_water_temp, lbl_oil_header, lbl_oil_temp,
-		lbl_aero_header, lbl_aero_dmg, lbl_engine_header, lbl_engine_dmg,
+		self.labels = [lbl_gearNum_header, lbl_gearNum, lbl_water_header, lbl_water_temp, 
+		lbl_oil_header, lbl_oil_temp, lbl_aero_header, lbl_aero_dmg, lbl_engine_header, lbl_engine_dmg,
 		lbl_fuel_header, lbl_fuel, lbl_fuel_remain, lbl_tire_temp_header,
 		lbl_fl_tyre_temp, lbl_fr_tyre_temp, lbl_rl_tyre_temp, lbl_rr_tyre_temp]
 
