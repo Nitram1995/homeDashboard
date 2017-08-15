@@ -7,6 +7,7 @@ import dataParser
 import udp_client as UDP
 #import LEDcontrol as LED
 import GUI
+import socket
 
 PCARS = game.GameUDP('', 5606, 1367)
 
@@ -22,14 +23,19 @@ setup_game_mode(PCARS) #Should be setup later to take multiple games
 
 
 def get_and_handle_data():
-	data = UDP.get_udp_data()
-	dataParser.PCars_parser(data, telemetry)
+	#LED.led_control(telemetry)
+	GUI.update_variables(telemetry)
+	
+	try:
+		data = UDP.get_udp_data()
+		dataParser.PCars_parser(data, telemetry)
+	except socket.timeout:
+		print ("UDP client timed out\n")
+
 
 	#print (telemetry.gear, telemetry.RPM, telemetry.headlightsActive, telemetry.flag)
 	#if(telemetry.brake > 0):
 		#print(telemetry.brake, telemetry.FL_tire_rps, telemetry.FL_locking_state(), telemetry.RPM_pct())
-	#LED.led_control(telemetry)
-	GUI.update_variables(telemetry)
 	GUI.root.after(1, get_and_handle_data)
 
 GUI.root_setup(GUI.root)
