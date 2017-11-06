@@ -60,3 +60,9 @@ def PCars_parser(data, gData):
 	#gData.brake = struct.unpack("<B", data[7])[0]
 	gData.FL_tire_temp, gData.FR_tire_temp, gData.RL_tire_temp, gData.RR_tire_temp = struct.unpack('<HHHH', data[344:352])
 	gData.aero_damage, gData.engine_damage = struct.unpack('<BB', data[456:458])
+
+'''Project Cars 2 sending out using the PCars1 protocol with minor changes'''
+def PCars2_protocol1_parser(data, gData):
+	PCars_parser(data, gData)
+	gData.aero_damage = ((gData.aero_damage * 100) / 255)
+	Data.engine_damage = ((gData.engine_damage * 100) / 255)
