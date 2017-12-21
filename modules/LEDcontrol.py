@@ -139,7 +139,7 @@ def hybrid_led(data):
 	'''
 	for z in range(x + 1, (HYBRID_END_POS + 1)):
 		blinkt.set_pixel(z, 0, 0, 0, 0)
-	''
+	'''
 
 
 
