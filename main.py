@@ -28,7 +28,7 @@ def get_and_handle_data():
 	
 	try:
 		data = UDP.get_udp_data()
-		dataParser.PCars_parser(data, telemetry)
+		dataParser.PCars2_protocol1_parser(data, telemetry)
 	except socket.timeout:
 		print ("UDP client timed out\n")
 

@@ -19,6 +19,11 @@ fr_tire_temp = tk.IntVar()
 rl_tire_temp = tk.IntVar()
 rr_tire_temp = tk.IntVar()
 
+fl_brake_dmg = tk.IntVar()
+fr_brake_dmg = tk.IntVar()
+rl_brake_dmg = tk.IntVar()
+rr_brake_dmg = tk.IntVar()
+
 aero_dmg = tk.IntVar()
 engine_dmg = tk.IntVar()
 water_temp = tk.IntVar()
@@ -34,6 +39,11 @@ def update_variables(gData):
 	fr_tire_temp.set(gData.FR_tire_temp_c())
 	rl_tire_temp.set(gData.RL_tire_temp_c())
 	rr_tire_temp.set(gData.RR_tire_temp_c())
+
+	fl_brake_dmg.set(gData.FL_brake_damage)
+	fr_brake_dmg.set(gData.FR_brake_damage)
+	rl_brake_dmg.set(gData.RL_brake_damage)
+	rr_brake_dmg.set(gData.RR_brake_damage)
 
 	water_temp.set(gData.waterTemp)
 	oil_temp.set(gData.oilTemp)
@@ -90,8 +100,11 @@ class screenPCars:
 		aero_dmg_frame = self.make_aero_damage_frame(frame)
 		aero_dmg_frame.grid(row=7, column=0, rowspan=2, columnspan=3, sticky='nsew')
 
+		brake_dmg_frame = self.make_brake_damage_frame(frame)
+		brake_dmg_frame.grid(row=6, column=3, rowspan=3, columnspan=6, sticky='nswe')
+
 		tire_temps_frame = self.make_tire_temperature_frame(frame)
-		tire_temps_frame.grid(row=6, column=10, rowspan=3, columnspan=6, sticky='nsew')
+		tire_temps_frame.grid(row=6, column=9, rowspan=3, columnspan=7, sticky='nsew')
 
 		gear_frame = self.make_gear_frame(frame)
 		gear_frame.grid(row=0, column=8, rowspan=6, columnspan=2, sticky='nsew')
@@ -117,6 +130,26 @@ class screenPCars:
 		lbl_rr_tyre_temp.grid(row=2, column=3, rowspan=1, columnspan=3, sticky='nsew')
 
 		return frame
+
+
+	def make_brake_damage_frame(self, master):
+		frame = tk.Frame(master, borderwidth=1, bg=bg_color, highlightbackground=border_color, highlightthickness=1, relief=tk.SOLID, bd=0)
+		configure_grid(frame, 3, 6)
+
+		lbl_brake_dmg_header = tk.Label(frame, text='Brake damage', font=self.font, bg=bg_color, fg=header_color, borderwidth=2)
+		lbl_fl_brake_dmg = tk.Label(frame, textvariable=fl_brake_dmg, font=self.font, bg=bg_color, fg=txt_color, borderwidth=1, relief=self.relief)
+		lbl_fr_brake_dmg = tk.Label(frame, textvariable=fr_brake_dmg, font=self.font, bg=bg_color, fg=txt_color, borderwidth=1, relief=self.relief)
+		lbl_rl_brake_dmg = tk.Label(frame, textvariable=rl_brake_dmg, font=self.font, bg=bg_color, fg=txt_color, borderwidth=1, relief=self.relief)
+		lbl_rr_brake_dmg = tk.Label(frame, textvariable=rr_brake_dmg, font=self.font, bg=bg_color, fg=txt_color, borderwidth=1, relief=self.relief)
+
+		lbl_brake_dmg_header.grid(row=0, column=0, columnspan=6, sticky='nsew')
+		lbl_fl_brake_dmg.grid(row=1, column=0, rowspan=1, columnspan=3, sticky='nsew')
+		lbl_fr_brake_dmg.grid(row=1, column=3, rowspan=1, columnspan=3, sticky='nsew')
+		lbl_rl_brake_dmg.grid(row=2, column=0, rowspan=1, columnspan=3, sticky='nsew')
+		lbl_rr_brake_dmg.grid(row=2, column=3, rowspan=1, columnspan=3, sticky='nsew')
+
+		return frame
+
 
 	def make_fuel_frame(self, master):
 		frame = tk.Frame(master, borderwidth=1, bg=bg_color, highlightbackground=border_color, highlightthickness=1, relief=tk.SOLID, bd=0)

@@ -28,6 +28,10 @@ class GameData:
 	FR_tire_temp = -1
 	RL_tire_temp = -1
 	RR_tire_temp = -1
+	FL_brake_damage = -1
+	FR_brake_damage = -1
+	RL_brake_damage = -1
+	RR_brake_damage = -1
 
 	#User inputs
 	brake = -1
