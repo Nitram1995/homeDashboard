@@ -10,9 +10,11 @@ header_color = 'yellow'
 root = tk.Tk()
 
 main_font = tkFont.Font(family='Helvetica', size=12, weight='bold')
-small_font = tkFont.Font(family='Helvetica', size=int(main_font['size']*2), weight='bold')
+big_font = tkFont.Font(family='Helvetica', size=148, weight='bold')
 
 gear_num = tk.StringVar()
+
+lights_status = tk.StringVar()
 
 fl_tire_temp = tk.IntVar()
 fr_tire_temp = tk.IntVar()
@@ -34,6 +36,8 @@ fuel_laps_remain = tk.StringVar()
 
 def update_variables(gData):
 	gear_num.set(gData.gear)
+
+	lights_status.set("On") if gData.headlightsActive else lights_status.set("Off")
 
 	fl_tire_temp.set(gData.FL_tire_temp_c())
 	fr_tire_temp.set(gData.FR_tire_temp_c())
@@ -83,6 +87,7 @@ class screenPCars:
 		
 		self.relief = tk.GROOVE
 		self.font = main_font
+		self.big_font = big_font
 		
 		#Configuring the grid in the frame
 		configure_grid(frame, 9, 16)
@@ -91,9 +96,9 @@ class screenPCars:
 		fuel_frame.grid(row=0, column=0, rowspan=5, columnspan=3, sticky='nsew')
 		
 		water_t_frame = self.make_water_temperature_frame(frame)
-		water_t_frame.grid(row=0, column=13, rowspan=3, columnspan=3, sticky='nsew')
+		water_t_frame.grid(row=0, column=12, rowspan=3, columnspan=4, sticky='nsew')
 		oil_t_frame = self.make_oil_temperature_frame(frame)
-		oil_t_frame.grid(row=3, column=13, rowspan=3, columnspan=3, sticky='nsew')
+		oil_t_frame.grid(row=3, column=12, rowspan=3, columnspan=4, sticky='nsew')
 
 		engine_dmg_frame = self.make_engine_damage_frame(frame)
 		engine_dmg_frame.grid(row=5, column=0, rowspan=2, columnspan=3, sticky='nsew')
@@ -107,7 +112,10 @@ class screenPCars:
 		tire_temps_frame.grid(row=6, column=9, rowspan=3, columnspan=7, sticky='nsew')
 
 		gear_frame = self.make_gear_frame(frame)
-		gear_frame.grid(row=0, column=8, rowspan=6, columnspan=2, sticky='nsew')
+		gear_frame.grid(row=0, column=3, rowspan=6, columnspan=6, sticky='nsew')
+
+		lights_frame = self.make_lights_frame(frame)
+		lights_frame.grid(row=4, column=9, rowspan=2, columnspan=3, sticky='nsew')
 
 		#frame.bind('<Configure>', self.resize)
 
@@ -224,10 +232,23 @@ class screenPCars:
 		configure_grid(frame, 6, 1)
 
 		lbl_gear_header = tk.Label(frame, text='Gear', font=self.font, bg=bg_color, fg=header_color, borderwidth=2)
-		lbl_gear_num = tk.Label(frame, textvariable=gear_num, font=self.font, bg=bg_color, fg=txt_color, borderwidth=1, relief=self.relief)
+		lbl_gear_num = tk.Label(frame, textvariable=gear_num, font=self.big_font, bg=bg_color, fg=txt_color, borderwidth=1, relief=self.relief)
 
 		lbl_gear_header.grid(row=0, column=0, sticky='nsew')
 		lbl_gear_num.grid(row=1, column=0, rowspan=5, sticky='nsew')
+
+		return frame
+
+
+	def make_lights_frame(self, master):
+		frame = tk.Frame(master, borderwidth=1, bg=bg_color, highlightbackground=border_color, highlightthickness=1, relief=tk.SOLID, bd=0)
+		configure_grid(frame, 3, 3)
+
+		lbl_lights_header = tk.Label(frame, text='Lights', font=self.font, bg=bg_color, fg=header_color, borderwidth=2)
+		lbl_lights_status = tk.Label(frame, textvariable=lights_status, font=self.font, bg=bg_color, fg=txt_color, borderwidth=1, relief=self.relief)
+
+		lbl_lights_header.grid(row=0, column=0, columnspan=3, sticky='nsew')
+		lbl_lights_status.grid(row=1, column=0, rowspan=2, columnspan=3, sticky='nsew')
 
 		return frame
 
