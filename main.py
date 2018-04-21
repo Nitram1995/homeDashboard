@@ -23,14 +23,15 @@ setup_game_mode(PCARS) #Should be setup later to take multiple games
 
 
 def get_and_handle_data():
-	#LED.led_control(telemetry)
-	GUI.update_variables(telemetry)
-	
 	try:
 		data = UDP.get_udp_data()
-		dataParser.PCars2_protocol1_parser(data, telemetry)
 	except socket.timeout:
 		print ("UDP client timed out\n")
+	else:
+		dataParser.PCars2_protocol1_parser(data, telemetry)
+
+	#LED.led_control(telemetry)
+	GUI.update_variables(telemetry)
 
 
 	#print (telemetry.gear, telemetry.RPM, telemetry.headlightsActive, telemetry.flag)
