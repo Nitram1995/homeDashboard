@@ -38,7 +38,7 @@ class GameData:
 	stabilityControlOn = False
 	tractionControlOn = False
 
-	
+
 	def RPM_pct(self):
 		if(self.maxRPM != 0):
 			return (self.RPM * 100) / self.maxRPM
@@ -60,14 +60,13 @@ class GameData:
 	def front_wheel_lock_state(self, front_wheel_rps):
 		avr_rear_rps = (self.RL_tire_rps + self.RR_tire_rps) / 2
 		if(self.brake <= 0):
-                        return 0
-                elif(avr_rear_rps < 15):
-                        return 0
-                else:
-                        if(front_wheel_rps < 1):
-                                return 2
-                        elif(avr_rear_rps - front_wheel_rps > 20):
-                                return 1
-                return 0
+			return 0
+		elif(avr_rear_rps < 15):
+			return 0
+		else:
+			if(front_wheel_rps < 1):
+				return 2
+			elif(avr_rear_rps - front_wheel_rps > 20):
+				return 1
+		return 0
 
-			
