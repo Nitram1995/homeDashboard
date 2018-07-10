@@ -20,6 +20,7 @@ def setup_client(newHost, newPort, newExpectedLength):
 
 	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)	
 	s.bind((host, port))
+	s.settimeout(1)
 
 
 def get_udp_data():

@@ -35,7 +35,7 @@ BLUE = [0, 0, 255]
 WHITE = [255, 255, 255]
 PURPLE = [200, 0, 128]
 
-RPM_CRITICAL = 95
+RPM_CRITICAL = 97
 
 HYBRID_START_POS = 1
 HYBRID_END_POS = 5
@@ -136,8 +136,10 @@ def hybrid_led(data):
 	for z in range(HYBRID_START_POS, x + 1):
 		blinkt.set_pixel(z, GREEN[0], GREEN[1], GREEN[2], brightness)
 
+	'''
 	for z in range(x + 1, (HYBRID_END_POS + 1)):
 		blinkt.set_pixel(z, 0, 0, 0, 0)
+	'''
 
 
 

@@ -14,14 +14,24 @@ class GameData:
 	oilTemp = -1
 	waterTemp = -1
 	fuel = -1
+	maxFuel = -1
+	avr_fuel = -1
+	aero_damage = -1
+	engine_damage = -1
 
 	#Wheel state
 	FL_tire_rps = -1
 	FR_tire_rps = -1
 	RL_tire_rps = -1
 	RR_tire_rps = -1
-	#FL_tire_grip = -1
-	#FL_tire_slip = -1
+	FL_tire_temp = -1
+	FR_tire_temp = -1
+	RL_tire_temp = -1
+	RR_tire_temp = -1
+	FL_brake_damage = -1
+	FR_brake_damage = -1
+	RL_brake_damage = -1
+	RR_brake_damage = -1
 
 	#User inputs
 	brake = -1
@@ -45,8 +55,26 @@ class GameData:
 		else:
 			return 0
 
+	def curr_fuel(self):
+		return self.maxFuel * self.fuel
+
+	def FL_tire_temp_c(self):
+		return self.kelvin_to_celsius_int(self.FL_tire_temp)
+	def FR_tire_temp_c(self):
+		return self.kelvin_to_celsius_int(self.FR_tire_temp)
+	def RL_tire_temp_c(self):
+		return self.kelvin_to_celsius_int(self.RL_tire_temp)
+	def RR_tire_temp_c(self):
+		return self.kelvin_to_celsius_int(self.RR_tire_temp)
+
+	def kelvin_to_celsius_int(self, temp):
+		return temp - 273
+
+	def fuel_laps_remaining(self):
+		return self.fuel / self.avr_fuel
+
 	def lowFuel(self):
-		if(self.fuel < 10):
+		if(fuel_laps_remaining() < 2):
 			return True
 		else:
 			return False
