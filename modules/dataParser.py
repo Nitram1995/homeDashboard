@@ -18,7 +18,7 @@ def PCars_parser(data, gData):
 
 
 	gData.oilTemp = struct.unpack("<h", data[100:102])
-	gData.waterTemp = struct.unpack("<h", data[104:106])
+	gData.waterTemp = struct.unpack("<h", data[104:106])[0]
 	
 	flagInt = data[98]
 	if flagInt == 1:

@@ -9,6 +9,7 @@ import LEDcontrol as LED
 import GUI
 #import testGUI as GUI
 import socket
+import time
 
 import _thread
 
@@ -39,11 +40,12 @@ def get_and_handle_data(args):
 		#if(telemetry.brake > 0):
 			#print(telemetry.brake, telemetry.FL_tire_rps, telemetry.FL_locking_state(), telemetry.RPM_pct())
 		#print(telemetry.hybrid_pct, telemetry.gear)
+		time.sleep(0.020)
 
 
 def update_gui():
 	GUI.update_variables(telemetry)
-	GUI.root.after(1, update_gui)
+	GUI.root.after(50, update_gui)
 
 _thread.start_new_thread(get_and_handle_data, (telemetry,))
 
