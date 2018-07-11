@@ -42,7 +42,8 @@ HYBRID_END_POS = 5
 FUEL_WARNING_POS = 6
 FLAG_POS = [0, 15]
 
-def led_control(gameData):
+def led_control(args):
+	gameData = args
 	'''(pit, flag, rpm_pct, lowFuel, 
 				flLock, frLock, hybrid=None):'''
 	global currTime
@@ -55,42 +56,44 @@ def led_control(gameData):
 	global lastFastBlink
 	global lastPulseBlink
 
-	newTime = time.time()
-	blinkt.clear() #Clears LED buffer
+	while True:
+		newTime = time.time()
+		blinkt.clear() #Clears LED buffer
 
-	if newTime >= (lastSlowBlink + SLOW_BLINK):
-		slowBlinkOn = not slowBlinkOn
-		lastSlowBlink = newTime
-	if newTime >= (lastMedBlink + MED_BLINK):
-		medBlinkOn = not medBlinkOn
-		lastMedBlink = newTime
-	if newTime >= (lastFastBlink + FAST_BLINK):
-		fastBlinkOn = not fastBlinkOn
-		lastFastBlink = newTime
-	if newTime >= (lastPulseBlink + PULSE_BLINK):
-		pulseBlinkOn = not pulseBlinkOn
-		lastPulseBlink = newTime
+		if newTime >= (lastSlowBlink + SLOW_BLINK):
+			slowBlinkOn = not slowBlinkOn
+			lastSlowBlink = newTime
+		if newTime >= (lastMedBlink + MED_BLINK):
+			medBlinkOn = not medBlinkOn
+			lastMedBlink = newTime
+		if newTime >= (lastFastBlink + FAST_BLINK):
+			fastBlinkOn = not fastBlinkOn
+			lastFastBlink = newTime
+		if newTime >= (lastPulseBlink + PULSE_BLINK):
+			pulseBlinkOn = not pulseBlinkOn
+			lastPulseBlink = newTime
 
 
-	'''
-	The sooner an 'led' method is called the lower priority it has.
-	The later ones owerwrite the earlier ones.
-	'''
+		'''
+		The sooner an 'led' method is called the lower priority it has.
+		The later ones owerwrite the earlier ones.
+		'''
 
-	rpm_led(gameData)
+		rpm_led(gameData)
 
-	if gameData.hybrid_pct != -1:
-		hybrid_led(gameData)
+		if gameData.hybrid_pct != -1:
+			hybrid_led(gameData)
 
-	flag_led(gameData)
+		flag_led(gameData)
 
-	car_warning_led(gameData)
+		car_warning_led(gameData)
 
-	pit_lim_led(gameData)
+		pit_lim_led(gameData)
 
-	blinkt.show() #Sends signal to LEDs
-	
-	currTime = newTime
+		blinkt.show() #Sends signal to LEDs
+
+		currTime = newTime
+		time.sleep(0.016)
 
 def rpm_led(data):
 	rpm_pct = data.RPM_pct()

@@ -34,13 +34,13 @@ def get_and_handle_data(args):
 		else:
 			dataParser.PCars2_protocol1_parser(data, telemetry)
 
-		LED.led_control(telemetry)
+		#LED.led_control(telemetry)
 
 		#print (telemetry.gear, telemetry.RPM, telemetry.headlightsActive, telemetry.flag)
 		#if(telemetry.brake > 0):
 			#print(telemetry.brake, telemetry.FL_tire_rps, telemetry.FL_locking_state(), telemetry.RPM_pct())
 		#print(telemetry.hybrid_pct, telemetry.gear)
-		time.sleep(0.020)
+		#time.sleep(0.020)
 
 
 def update_gui():
@@ -48,6 +48,8 @@ def update_gui():
 	GUI.root.after(50, update_gui)
 
 _thread.start_new_thread(get_and_handle_data, (telemetry,))
+_thread.start_new_thread(LED.led_control, (telemetry,))
+
 
 GUI.root_setup(GUI.root)
 GUI.frame = GUI.screenPCars(GUI.root)
