@@ -1,5 +1,6 @@
-import tkinter as tk
-import tkinter.font as tkFont
+import Tkinter as tk
+#import tkinter.font as tkFont
+import tkFont
 
 bg_color = 'black'
 border_color = 'white'

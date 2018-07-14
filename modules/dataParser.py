@@ -31,7 +31,7 @@ def PCars_parser(data, gData):
 		gData.flag = 'none'
 	
 	
-	gearInt = data[128] & 0x0f #For highest bits are current gear
+	gearInt = struct.unpack("<B", data[128])[0] & 0x0f #For highest bits are current gear
 	if(gearInt == 15):
 		gData.gear = 'R'
 	elif(gearInt == 0):
@@ -40,7 +40,7 @@ def PCars_parser(data, gData):
 		gData.gear = str(gearInt) #Packs the byte (int) as a char
 	
 	
-	carFlags = data[110]
+	carFlags = struct.unpack("<B", data[110])[0]
 	gData.headlightsActive = 		carFlags & 0x01
 	gData.engineWarningActive = 	carFlags & 0x04
 	gData.pitLimiterActive = 		carFlags & 0x08
@@ -49,7 +49,7 @@ def PCars_parser(data, gData):
 	gData.stabilityControlOn = 		carFlags & 0x40
 	gData.tractionControlOn = 		carFlags & 0x80
 	
-	gData.maxFuel = data[111]
+	gData.maxFuel = struct.unpack("<B", data[111])[0]
 
 	gData.FL_tire_rps = -(struct.unpack("<f", data[244:248])[0])
 	gData.FR_tire_rps = -(struct.unpack("<f", data[248:252])[0])
@@ -59,7 +59,7 @@ def PCars_parser(data, gData):
 	#gData.FL_tire_slip = struct.unpack("<f", data[260:264])
 
 	gData.brake = data[7]
-	gData.hybrid_pct = data[129]
+	gData.hybrid_pct = struct.unpack("<B", data[129])[0]
 
 	gData.FL_tire_temp, gData.FR_tire_temp, gData.RL_tire_temp, gData.RR_tire_temp = struct.unpack('<HHHH', data[344:352])
 	gData.aero_damage, gData.engine_damage = struct.unpack('<BB', data[456:458])

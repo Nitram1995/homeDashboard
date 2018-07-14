@@ -11,7 +11,8 @@ import GUI
 import socket
 import time
 
-import _thread
+#import _thread as thread
+import thread
 
 PCARS = game.GameUDP('', 5606, 1367)
 
@@ -47,8 +48,8 @@ def update_gui():
 	GUI.update_variables(telemetry)
 	GUI.root.after(50, update_gui)
 
-_thread.start_new_thread(get_and_handle_data, (telemetry,))
-_thread.start_new_thread(LED.led_control, (telemetry,))
+thread.start_new_thread(get_and_handle_data, (telemetry,))
+thread.start_new_thread(LED.led_control, (telemetry,))
 
 
 GUI.root_setup(GUI.root)
