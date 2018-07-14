@@ -2,6 +2,7 @@ import sys
 sys.path.append("/home/pi/Git/homeDashboard/modules")
 
 import blinkt16 as blinkt
+import RPi.GPIO as GPIO
 from math import ceil
 import time
 
@@ -48,8 +49,6 @@ L_YELLOW_LED = 8
 R_YELLOW_LED = 23
 L_GREEN_LED = 24
 R_GREEN_LED = 25
-
-setup_gpio()
 
 def setup_gpio():
 	blinkt.gpio_init()
@@ -242,3 +241,5 @@ def pit_lim_led(data):
 					blinkt.set_pixel(z, RED[0], RED[1], RED[2], brightness)
 				else:
 					blinkt.set_pixel(z, 0, 0, 0, 0)
+
+setup_gpio()
