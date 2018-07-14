@@ -121,7 +121,7 @@ def rpm_led(data):
 		blinkt.set_pixel(9, RED[0], RED[1], RED[2], brightness)
 	
 	#Blue LEDs
-	if(rpm_pct >= RPM_CRITICAL): 
+	if(rpm_pct >= RPM_CRITICAL):
 		for z in range(10, 15):
 			blinkt.set_pixel(z, BLUE[0], BLUE[1], BLUE[2], brightness)
 
@@ -139,10 +139,10 @@ def hybrid_led(data):
 	for z in range(HYBRID_START_POS, x + 1):
 		blinkt.set_pixel(z, GREEN[0], GREEN[1], GREEN[2], brightness)
 
-	'''
+
 	for z in range(x + 1, (HYBRID_END_POS + 1)):
 		blinkt.set_pixel(z, 0, 0, 0, 0)
-	'''
+
 
 
 
@@ -172,7 +172,7 @@ def flag_led(data):
 
 
 def car_warning_led(data):
-	lowFuel = data.lowFuel
+	lowFuel = data.lowFuel()
 	flLock = data.FL_locking_state()
 	frLock = data.FR_locking_state()
 

@@ -74,10 +74,15 @@ class GameData:
 		return self.fuel / self.avr_fuel
 
 	def lowFuel(self):
-		if(fuel_laps_remaining() < 2):
+		'''
+		if(self.fuel_laps_remaining() < 2):
 			return True
 		else:
 			return False
+		'''
+		print(self.fuel)
+		return (self.curr_fuel() < 10)
+
 
 	def FL_locking_state(self):
 		return self.front_wheel_lock_state(self.FL_tire_rps)

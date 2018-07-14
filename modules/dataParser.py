@@ -58,7 +58,7 @@ def PCars_parser(data, gData):
 	#gData.FL_tire_grip = struct.unpack("<B", data[280])[0]
 	#gData.FL_tire_slip = struct.unpack("<f", data[260:264])
 
-	gData.brake = data[7]
+	gData.brake = struct.unpack("<B", data[7])[0]
 	gData.hybrid_pct = struct.unpack("<B", data[129])[0]
 
 	gData.FL_tire_temp, gData.FR_tire_temp, gData.RL_tire_temp, gData.RR_tire_temp = struct.unpack('<HHHH', data[344:352])
