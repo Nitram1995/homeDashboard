@@ -6,6 +6,7 @@ import game
 import dataParser
 import udp_client as UDP
 import LEDcontrol as LED
+import button_control as buttons
 import GUI
 #import testGUI as GUI
 import socket
@@ -48,9 +49,12 @@ def update_gui():
 	GUI.update_variables(telemetry)
 	GUI.root.after(50, update_gui)
 
+buttons.buttons_init()
+buttons.button_interupt_init(buttons.BTN_BLK, LED.test_all_leds)
+buttons.button_interupt_init(buttons.BTN_WHT, LED.test_all_leds)
+
 thread.start_new_thread(get_and_handle_data, (telemetry,))
 thread.start_new_thread(LED.init_and_run, (telemetry,))
-
 
 GUI.root_setup(GUI.root)
 GUI.frame = GUI.screenPCars(GUI.root)
