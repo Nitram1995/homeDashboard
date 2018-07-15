@@ -43,11 +43,11 @@ HYBRID_END_POS = 5
 FUEL_WARNING_POS = 6
 FLAG_POS = [0, 15]
 
-L_RED_LED = 1
-R_RED_LED = 7
-L_YELLOW_LED = 8
-R_YELLOW_LED = 23
-L_GREEN_LED = 24
+L_RED_LED = 8
+R_RED_LED = 23
+L_YELLOW_LED = 7
+R_YELLOW_LED = 24
+L_GREEN_LED = 1
 R_GREEN_LED = 25
 
 def setup_gpio():
@@ -55,12 +55,7 @@ def setup_gpio():
 
 	GPIO.setmode(GPIO.BCM)
 	GPIO.setwarnings(False)
-	GPIO.setup(L_RED_LED, GPIO.OUT)
-	GPIO.setup(R_RED_LED, GPIO.OUT)
-	GPIO.setup(L_YELLOW_LED, GPIO.OUT)
-	GPIO.setup(R_YELLOW_LED, GPIO.OUT)
-	GPIO.setup(L_GREEN_LED, GPIO.OUT)
-	GPIO.setup(R_GREEN_LED, GPIO.OUT)
+	GPIO.setup((L_RED_LED, R_RED_LED, L_YELLOW_LED,R_YELLOW_LED, L_GREEN_LED, R_GREEN_LED), GPIO.OUT)
 
 def test_all_leds():
 	GPIO.output((L_RED_LED, R_RED_LED, L_YELLOW_LED, R_YELLOW_LED, L_GREEN_LED, R_GREEN_LED), GPIO.HIGH)
@@ -73,6 +68,7 @@ def test_all_leds():
 	GPIO.output((L_RED_LED, R_RED_LED, L_YELLOW_LED, R_YELLOW_LED, L_GREEN_LED, R_GREEN_LED), GPIO.LOW)
 	blinkt.clear()
 	blinkt.show()
+
 
 def init_and_run(args):
 	setup_gpio()
