@@ -50,7 +50,7 @@ class GameData:
 
 
 	def RPM_pct(self):
-		if(self.maxRPM != 0):
+		if(self.maxRPM > 0):
 			return (self.RPM * 100) / self.maxRPM
 		else:
 			return 0
@@ -80,8 +80,8 @@ class GameData:
 		else:
 			return False
 		'''
-		print(self.fuel)
-		return (self.curr_fuel() < 10)
+
+		return (self.curr_fuel() < 10 and self.maxFuel > 0)
 
 
 	def FL_locking_state(self):
