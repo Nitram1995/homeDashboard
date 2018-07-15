@@ -62,8 +62,25 @@ def setup_gpio():
 	GPIO.setup(L_GREEN_LED, GPIO.OUT)
 	GPIO.setup(R_GREEN_LED, GPIO.OUT)
 
-def led_control(args):
-	gameData = args
+def test_all_leds():
+	GPIO.output((L_RED_LED, R_RED_LED, L_YELLOW_LED, R_YELLOW_LED, L_GREEN_LED, R_GREEN_LED), GPIO.HIGH)
+	for x in range(blinkt.NUM_PIXELS):
+		blinkt.set_pixel(x, WHITE[0], WHITE[1], WHITE[2], 0.2)
+	blinkt.show()
+
+	time.sleep(2)
+
+	GPIO.output((L_RED_LED, R_RED_LED, L_YELLOW_LED, R_YELLOW_LED, L_GREEN_LED, R_GREEN_LED), GPIO.LOW)
+	blinkt.clear()
+	blinkt.show()
+
+def init_and_run(args):
+	setup_gpio()
+	test_all_leds()
+	led_control(args)
+
+
+def led_control(gameData):
 	'''(pit, flag, rpm_pct, lowFuel, 
 				flLock, frLock, hybrid=None):'''
 	global currTime
@@ -129,7 +146,7 @@ def rpm_led(data):
 		blinkt.set_pixel(4, GREEN[0], GREEN[1], GREEN[2], brightness)
 	if(rpm_pct >= (RPM_CRITICAL - 10)):
 		blinkt.set_pixel(5, GREEN[0], GREEN[1], GREEN[2], brightness)
-	
+
 	#Red LEDs
 	if(rpm_pct >= (RPM_CRITICAL - 8)):
 		blinkt.set_pixel(6, RED[0], RED[1], RED[2], brightness)
@@ -139,7 +156,7 @@ def rpm_led(data):
 		blinkt.set_pixel(8, RED[0], RED[1], RED[2], brightness)
 	if(rpm_pct >= (RPM_CRITICAL - 2)):
 		blinkt.set_pixel(9, RED[0], RED[1], RED[2], brightness)
-	
+
 	#Blue LEDs
 	if(rpm_pct >= RPM_CRITICAL):
 		for z in range(10, 15):
@@ -242,4 +259,4 @@ def pit_lim_led(data):
 				else:
 					blinkt.set_pixel(z, 0, 0, 0, 0)
 
-setup_gpio()
+

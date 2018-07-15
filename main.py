@@ -49,7 +49,7 @@ def update_gui():
 	GUI.root.after(50, update_gui)
 
 thread.start_new_thread(get_and_handle_data, (telemetry,))
-thread.start_new_thread(LED.led_control, (telemetry,))
+thread.start_new_thread(LED.init_and_run, (telemetry,))
 
 
 GUI.root_setup(GUI.root)
