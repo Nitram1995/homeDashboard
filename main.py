@@ -11,7 +11,6 @@ import GUI
 #import testGUI as GUI
 import socket
 import time
-
 #import _thread as thread
 import thread
 
@@ -50,8 +49,8 @@ def update_gui():
 	GUI.root.after(50, update_gui)
 
 buttons.buttons_init()
-buttons.button_interupt_init(buttons.BTN_BLK, LED.test_all_leds)
-buttons.button_interupt_init(buttons.BTN_WHT, LED.test_all_leds)
+#buttons.button_interupt_init(buttons.BTN_BLK, LED.test_all_leds)
+#buttons.button_interupt_init(buttons.BTN_WHT, LED.test_all_leds)
 
 thread.start_new_thread(get_and_handle_data, (telemetry,))
 thread.start_new_thread(LED.init_and_run, (telemetry,))

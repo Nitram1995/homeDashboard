@@ -4,6 +4,7 @@ BTN_BLK = 12
 BTN_WHT = 16
 
 def buttons_init():
+	GPIO.setmode(GPIO.BCM)
 	GPIO.setup((BTN_BLK, BTN_WHT), GPIO.IN)
 
 
