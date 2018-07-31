@@ -125,8 +125,15 @@ def led_control(gameData):
 
 		blinkt.show() #Sends signal to LEDs
 
+		seperate_leds_control(gameData)
+
 		currTime = newTime
 		time.sleep(0.016)
+
+
+def seperate_leds_control(data):
+	GPIO.output(R_GREEN_LED, data.headlightsActive)
+
 
 def rpm_led(data):
 	rpm_pct = data.RPM_pct()
