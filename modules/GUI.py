@@ -1,5 +1,6 @@
-import tkinter as tk
-import tkinter.font as tkFont
+import Tkinter as tk
+#import tkinter.font as tkFont
+import tkFont
 
 bg_color = 'black'
 border_color = 'white'
@@ -35,27 +36,37 @@ fuel = tk.StringVar()
 fuel_laps_remain = tk.StringVar()
 
 def update_variables(gData):
-	gear_num.set(gData.gear)
+	if(gear_num.get() != gData.gear):
+		gear_num.set(gData.gear)
 
-	lights_status.set("On") if gData.headlightsActive else lights_status.set("Off")
+	if((lights_status.get() != "On" and gData.headlightsActive == 1) or (lights_status.get() != "Off" and gData.headlightsActive == 0)):
+		lights_status.set("On") if gData.headlightsActive else lights_status.set("Off")
 
-	fl_tire_temp.set(gData.FL_tire_temp_c())
-	fr_tire_temp.set(gData.FR_tire_temp_c())
-	rl_tire_temp.set(gData.RL_tire_temp_c())
-	rr_tire_temp.set(gData.RR_tire_temp_c())
+	if(fl_tire_temp.get() != gData.FL_tire_temp_c()):
+		fl_tire_temp.set(gData.FL_tire_temp_c())
+		fr_tire_temp.set(gData.FR_tire_temp_c())
+		rl_tire_temp.set(gData.RL_tire_temp_c())
+		rr_tire_temp.set(gData.RR_tire_temp_c())
 
-	fl_brake_dmg.set(gData.FL_brake_damage)
-	fr_brake_dmg.set(gData.FR_brake_damage)
-	rl_brake_dmg.set(gData.RL_brake_damage)
-	rr_brake_dmg.set(gData.RR_brake_damage)
+	if(fl_brake_dmg.get() != gData.FL_brake_damage):
+		fl_brake_dmg.set(gData.FL_brake_damage)
+		fr_brake_dmg.set(gData.FR_brake_damage)
+		rl_brake_dmg.set(gData.RL_brake_damage)
+		rr_brake_dmg.set(gData.RR_brake_damage)
 
-	water_temp.set(gData.waterTemp)
-	oil_temp.set(gData.oilTemp)
+	if(water_temp.get() != gData.waterTemp):
+		water_temp.set(gData.waterTemp)
 
-	aero_dmg.set(gData.aero_damage)
-	engine_dmg.set(gData.engine_damage)
+
+	if(oil_temp.set != gData.oilTemp):
+		oil_temp.set(gData.oilTemp)
+
+	if(aero_dmg.get() != gData.aero_damage or engine_dmg.get() != gData.engine_damage):
+		aero_dmg.set(gData.aero_damage)
+		engine_dmg.set(gData.engine_damage)
 
 	fuel.set('{:.2f}'.format(gData.curr_fuel()))
+
 
 def quit(event):
 	root.quit()
@@ -78,6 +89,7 @@ def root_setup(root):
 	root.overrideredirect(1)
 	root.geometry('%dx%d+0+0' % (w, h))
 
+	root.config(cursor="none")
 	#root.focus_set() # <-- move focus to this widget
 
 class screenPCars:

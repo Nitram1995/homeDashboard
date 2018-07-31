@@ -2,6 +2,7 @@ import sys
 sys.path.append("/home/pi/Git/homeDashboard/modules")
 
 import blinkt16 as blinkt
+import RPi.GPIO as GPIO
 from math import ceil
 import time
 
@@ -42,6 +43,39 @@ HYBRID_END_POS = 5
 FUEL_WARNING_POS = 6
 FLAG_POS = [0, 15]
 
+L_RED_LED = 8
+R_RED_LED = 23
+L_YELLOW_LED = 7
+R_YELLOW_LED = 24
+L_GREEN_LED = 1
+R_GREEN_LED = 25
+
+def setup_gpio():
+	blinkt.gpio_init()
+
+	GPIO.setmode(GPIO.BCM)
+	GPIO.setwarnings(False)
+	GPIO.setup((L_RED_LED, R_RED_LED, L_YELLOW_LED,R_YELLOW_LED, L_GREEN_LED, R_GREEN_LED), GPIO.OUT)
+
+def test_all_leds():
+	GPIO.output((L_RED_LED, R_RED_LED, L_YELLOW_LED, R_YELLOW_LED, L_GREEN_LED, R_GREEN_LED), GPIO.HIGH)
+	for x in range(blinkt.NUM_PIXELS):
+		blinkt.set_pixel(x, WHITE[0], WHITE[1], WHITE[2], 0.2)
+	blinkt.show()
+
+	time.sleep(2)
+
+	GPIO.output((L_RED_LED, R_RED_LED, L_YELLOW_LED, R_YELLOW_LED, L_GREEN_LED, R_GREEN_LED), GPIO.LOW)
+	blinkt.clear()
+	blinkt.show()
+
+
+def init_and_run(args):
+	setup_gpio()
+	test_all_leds()
+	led_control(args)
+
+
 def led_control(gameData):
 	'''(pit, flag, rpm_pct, lowFuel, 
 				flLock, frLock, hybrid=None):'''
@@ -55,42 +89,51 @@ def led_control(gameData):
 	global lastFastBlink
 	global lastPulseBlink
 
-	newTime = time.time()
-	blinkt.clear() #Clears LED buffer
+	while True:
+		newTime = time.time()
+		blinkt.clear() #Clears LED buffer
 
-	if newTime >= (lastSlowBlink + SLOW_BLINK):
-		slowBlinkOn = not slowBlinkOn
-		lastSlowBlink = newTime
-	if newTime >= (lastMedBlink + MED_BLINK):
-		medBlinkOn = not medBlinkOn
-		lastMedBlink = newTime
-	if newTime >= (lastFastBlink + FAST_BLINK):
-		fastBlinkOn = not fastBlinkOn
-		lastFastBlink = newTime
-	if newTime >= (lastPulseBlink + PULSE_BLINK):
-		pulseBlinkOn = not pulseBlinkOn
-		lastPulseBlink = newTime
+		if newTime >= (lastSlowBlink + SLOW_BLINK):
+			slowBlinkOn = not slowBlinkOn
+			lastSlowBlink = newTime
+		if newTime >= (lastMedBlink + MED_BLINK):
+			medBlinkOn = not medBlinkOn
+			lastMedBlink = newTime
+		if newTime >= (lastFastBlink + FAST_BLINK):
+			fastBlinkOn = not fastBlinkOn
+			lastFastBlink = newTime
+		if newTime >= (lastPulseBlink + PULSE_BLINK):
+			pulseBlinkOn = not pulseBlinkOn
+			lastPulseBlink = newTime
 
 
-	'''
-	The sooner an 'led' method is called the lower priority it has.
-	The later ones owerwrite the earlier ones.
-	'''
+		'''
+		The sooner an 'led' method is called the lower priority it has.
+		The later ones owerwrite the earlier ones.
+		'''
 
-	rpm_led(gameData)
+		rpm_led(gameData)
 
-	if gameData.hybrid_pct != -1:
-		hybrid_led(gameData)
+		if gameData.hybrid_pct != -1:
+			hybrid_led(gameData)
 
-	flag_led(gameData)
+		flag_led(gameData)
 
-	car_warning_led(gameData)
+		car_warning_led(gameData)
 
-	pit_lim_led(gameData)
+		pit_lim_led(gameData)
 
-	blinkt.show() #Sends signal to LEDs
-	
-	currTime = newTime
+		blinkt.show() #Sends signal to LEDs
+
+		seperate_leds_control(gameData)
+
+		currTime = newTime
+		time.sleep(0.016)
+
+
+def seperate_leds_control(data):
+	GPIO.output(R_GREEN_LED, data.headlightsActive)
+
 
 def rpm_led(data):
 	rpm_pct = data.RPM_pct()
@@ -106,7 +149,7 @@ def rpm_led(data):
 		blinkt.set_pixel(4, GREEN[0], GREEN[1], GREEN[2], brightness)
 	if(rpm_pct >= (RPM_CRITICAL - 10)):
 		blinkt.set_pixel(5, GREEN[0], GREEN[1], GREEN[2], brightness)
-	
+
 	#Red LEDs
 	if(rpm_pct >= (RPM_CRITICAL - 8)):
 		blinkt.set_pixel(6, RED[0], RED[1], RED[2], brightness)
@@ -116,9 +159,9 @@ def rpm_led(data):
 		blinkt.set_pixel(8, RED[0], RED[1], RED[2], brightness)
 	if(rpm_pct >= (RPM_CRITICAL - 2)):
 		blinkt.set_pixel(9, RED[0], RED[1], RED[2], brightness)
-	
+
 	#Blue LEDs
-	if(rpm_pct >= RPM_CRITICAL): 
+	if(rpm_pct >= RPM_CRITICAL):
 		for z in range(10, 15):
 			blinkt.set_pixel(z, BLUE[0], BLUE[1], BLUE[2], brightness)
 
@@ -136,10 +179,10 @@ def hybrid_led(data):
 	for z in range(HYBRID_START_POS, x + 1):
 		blinkt.set_pixel(z, GREEN[0], GREEN[1], GREEN[2], brightness)
 
-	'''
+
 	for z in range(x + 1, (HYBRID_END_POS + 1)):
 		blinkt.set_pixel(z, 0, 0, 0, 0)
-	'''
+
 
 
 
@@ -169,7 +212,7 @@ def flag_led(data):
 
 
 def car_warning_led(data):
-	lowFuel = data.lowFuel
+	lowFuel = data.lowFuel()
 	flLock = data.FL_locking_state()
 	frLock = data.FR_locking_state()
 
@@ -218,3 +261,5 @@ def pit_lim_led(data):
 					blinkt.set_pixel(z, RED[0], RED[1], RED[2], brightness)
 				else:
 					blinkt.set_pixel(z, 0, 0, 0, 0)
+
+

@@ -50,7 +50,7 @@ class GameData:
 
 
 	def RPM_pct(self):
-		if(self.maxRPM != 0):
+		if(self.maxRPM > 0):
 			return (self.RPM * 100) / self.maxRPM
 		else:
 			return 0
@@ -74,10 +74,15 @@ class GameData:
 		return self.fuel / self.avr_fuel
 
 	def lowFuel(self):
-		if(fuel_laps_remaining() < 2):
+		'''
+		if(self.fuel_laps_remaining() < 2):
 			return True
 		else:
 			return False
+		'''
+
+		return (self.curr_fuel() < 10 and self.maxFuel > 0)
+
 
 	def FL_locking_state(self):
 		return self.front_wheel_lock_state(self.FL_tire_rps)

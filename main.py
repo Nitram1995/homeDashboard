@@ -6,11 +6,13 @@ import game
 import dataParser
 import udp_client as UDP
 import LEDcontrol as LED
+import button_control as buttons
 import GUI
 #import testGUI as GUI
 import socket
-
-import _thread
+import time
+#import _thread as thread
+import thread
 
 PCARS = game.GameUDP('', 5606, 1367)
 
@@ -33,19 +35,25 @@ def get_and_handle_data(args):
 		else:
 			dataParser.PCars2_protocol1_parser(data, telemetry)
 
-		LED.led_control(telemetry)
+		#LED.led_control(telemetry)
 
 		#print (telemetry.gear, telemetry.RPM, telemetry.headlightsActive, telemetry.flag)
 		#if(telemetry.brake > 0):
 			#print(telemetry.brake, telemetry.FL_tire_rps, telemetry.FL_locking_state(), telemetry.RPM_pct())
 		#print(telemetry.hybrid_pct, telemetry.gear)
+		#time.sleep(0.020)
 
 
 def update_gui():
 	GUI.update_variables(telemetry)
-	GUI.root.after(1, update_gui)
+	GUI.root.after(50, update_gui)
 
-_thread.start_new_thread(get_and_handle_data, (telemetry,))
+buttons.buttons_init()
+#buttons.button_interupt_init(buttons.BTN_BLK, LED.test_all_leds)
+#buttons.button_interupt_init(buttons.BTN_WHT, LED.test_all_leds)
+
+thread.start_new_thread(get_and_handle_data, (telemetry,))
+thread.start_new_thread(LED.init_and_run, (telemetry,))
 
 GUI.root_setup(GUI.root)
 GUI.frame = GUI.screenPCars(GUI.root)

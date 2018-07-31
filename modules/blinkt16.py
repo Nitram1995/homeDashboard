@@ -5,9 +5,9 @@ import RPi.GPIO as GPIO
 
 __version__ = '0.0.1'
 
-DAT1 = 23
-DAT2 = 22
-CLK = 24
+DAT1 = 14
+DAT2 = 15
+CLK = 18
 NUM_PIXELS = 16
 PIXELS_ON_BLINKT = 8
 BRIGHTNESS = 7
@@ -68,12 +68,7 @@ def show():
     global _gpio_setup
 
     if not _gpio_setup:
-        GPIO.setmode(GPIO.BCM)
-        GPIO.setwarnings(False)
-        GPIO.setup(DAT1, GPIO.OUT)
-        GPIO.setup(DAT2, GPIO.OUT)
-        GPIO.setup(CLK, GPIO.OUT)
-        _gpio_setup = True
+        gpio_init()
 
     _sof()
 
@@ -90,6 +85,17 @@ def show():
         i += 1
 
     _eof()
+
+
+def gpio_init():
+    global _gpio_setup
+
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setwarnings(False)
+    GPIO.setup(DAT1, GPIO.OUT)
+    GPIO.setup(DAT2, GPIO.OUT)
+    GPIO.setup(CLK, GPIO.OUT)
+    _gpio_setup = True
 
 def set_all(r, g, b, brightness=None):
     """Set the RGB value and optionally brightness of all pixels
