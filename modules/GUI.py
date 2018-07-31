@@ -89,6 +89,7 @@ def root_setup(root):
 	root.overrideredirect(1)
 	root.geometry('%dx%d+0+0' % (w, h))
 
+	root.config(cursor="none")
 	#root.focus_set() # <-- move focus to this widget
 
 class screenPCars:
