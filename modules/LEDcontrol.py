@@ -6,6 +6,8 @@ import RPi.GPIO as GPIO
 from math import ceil
 import time
 
+exiting = False #This is a discusting implementation, sorry
+
 currTime = time.time()
 
 SLOW_BLINK = 0.6
@@ -69,6 +71,10 @@ def test_all_leds():
 	blinkt.clear()
 	blinkt.show()
 
+def cleanup_leds():
+	blinkt.clear()
+	GPIO.cleanup()
+	print "LED cleanup finished"
 
 def init_and_run(args):
 	setup_gpio()
@@ -128,6 +134,11 @@ def led_control(gameData):
 		seperate_leds_control(gameData)
 
 		currTime = newTime
+
+		if(exiting):
+			cleanup_leds()
+			return
+
 		time.sleep(0.016)
 
 

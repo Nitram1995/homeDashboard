@@ -31,7 +31,7 @@ def get_and_handle_data(args):
 		try:
 			data = UDP.get_udp_data()
 		except socket.timeout:
-			print ("UDP client timed out\n")
+			print ("UDP client timed out")
 		else:
 			dataParser.PCars2_protocol1_parser(data, telemetry)
 
@@ -48,9 +48,14 @@ def update_gui():
 	GUI.update_variables(telemetry)
 	GUI.root.after(50, update_gui)
 
+def exit_app(stuffs):
+	print "Exiting via 'exit_app'"
+	LED.exiting = True
+	time.sleep(1) #Look away kids.. This is NOT how its done properly
+	sys.exit()
+
 buttons.buttons_init()
-#buttons.button_interupt_init(buttons.BTN_BLK, LED.test_all_leds)
-#buttons.button_interupt_init(buttons.BTN_WHT, LED.test_all_leds)
+buttons.button_interupt_init(buttons.BTN_BLK, exit_app)
 
 thread.start_new_thread(get_and_handle_data, (telemetry,))
 thread.start_new_thread(LED.init_and_run, (telemetry,))
