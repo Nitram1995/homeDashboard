@@ -6,9 +6,8 @@ import RPi.GPIO as GPIO
 from math import ceil
 import time
 
-exiting = False #This is a discusting implementation, sorry
-
 currTime = time.time()
+app = None
 
 SLOW_BLINK = 0.6
 MED_BLINK = 0.3
@@ -76,10 +75,12 @@ def cleanup_leds():
 	GPIO.cleanup()
 	print "LED cleanup finished"
 
-def init_and_run(args):
+def init_and_run(appReference, telemetry):
+	global app
+	app = appReference
 	setup_gpio()
 	test_all_leds()
-	led_control(args)
+	led_control(telemetry)
 
 
 def led_control(gameData):
@@ -135,7 +136,7 @@ def led_control(gameData):
 
 		currTime = newTime
 
-		if(exiting):
+		if(app.exiting):
 			cleanup_leds()
 			return
 
