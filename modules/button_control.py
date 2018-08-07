@@ -1,4 +1,5 @@
 import RPi.GPIO as GPIO
+from LEDcontrol import led_brightness_inc
 import time
 
 PRESSED = 0
@@ -63,7 +64,7 @@ def btn_blk_long_press():
 
 def btn_wht_short_press():
 	print("BTN_WHT short press registered at", btn_wht_pressed_time)
-	pass
+	led_brightness_inc()
 
 
 def btn_wht_long_press():

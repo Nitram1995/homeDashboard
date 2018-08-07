@@ -28,10 +28,11 @@ r = 255
 g = 255
 b = 255
 brightness = 0.1
-
+max_brightness = 0.25
+brightness_inc_rate = 0.03
 
 RED = [255, 0, 0]
-YELLOW = [0, 0, 0]
+YELLOW = [255, 100, 0]
 GREEN = [0, 255, 0]
 BLUE = [0, 0, 255]
 WHITE = [255, 255, 255]
@@ -58,10 +59,11 @@ def setup_gpio():
 	GPIO.setwarnings(False)
 	GPIO.setup((L_RED_LED, R_RED_LED, L_YELLOW_LED,R_YELLOW_LED, L_GREEN_LED, R_GREEN_LED), GPIO.OUT)
 
+
 def test_all_leds():
 	GPIO.output((L_RED_LED, R_RED_LED, L_YELLOW_LED, R_YELLOW_LED, L_GREEN_LED, R_GREEN_LED), GPIO.HIGH)
 	for x in range(blinkt.NUM_PIXELS):
-		blinkt.set_pixel(x, WHITE[0], WHITE[1], WHITE[2], 0.2)
+		blinkt.set_pixel(x, WHITE[0], WHITE[1], WHITE[2], brightness)
 	blinkt.show()
 
 	time.sleep(2)
@@ -70,10 +72,21 @@ def test_all_leds():
 	blinkt.clear()
 	blinkt.show()
 
+
 def cleanup_leds():
 	blinkt.clear()
 	GPIO.cleanup()
 	print "LED cleanup finished"
+
+
+def led_brightness_inc():
+	global brightness
+	if(brightness + brightness_inc_rate <= max_brightness):
+		brightness += brightness_inc_rate
+	else:
+		brightness = 0.04
+	print("Brightness set to", brightness)
+
 
 def init_and_run(appReference, telemetry):
 	global app
