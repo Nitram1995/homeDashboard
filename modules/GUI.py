@@ -1,6 +1,7 @@
 import Tkinter as tk
 #import tkinter.font as tkFont
 import tkFont
+import time
 
 bg_color = 'black'
 border_color = 'white'
@@ -92,41 +93,61 @@ def root_setup(root):
 	root.config(cursor="none")
 	#root.focus_set() # <-- move focus to this widget
 
+
+class screenGeneralMessage:
+	def __init__(self, master, message, value=None, bg_color=None, fg_color=None):
+		self.msg_bg = bg_color if (bg_color != None) else "white"
+		self.msg_fg = fg_color if (fg_color != None) else "black"
+	
+		self.font = main_font
+		self.big_font = big_font
+
+		self.frame = tk.Frame(master, bg="white")
+		#frame.grid(row=0, column=0, sticky='nsew')
+		configure_grid(self.frame, 2, 1)
+
+		lbl_val = tk.Label(self.frame, text=value, font=self.big_font, bg=self.msg_bg, fg=self.msg_fg)
+		lbl_val.grid(row=0, column=0, sticky='nsew')
+
+		lbl_msg = tk.Label(self.frame, text=message, font=self.font, bg=self.msg_bg, fg=self.msg_fg)
+		lbl_msg.grid(row=1, column=0, sticky='nsew')
+
+
 class screenPCars:
 	def __init__(self, master):
-		frame = tk.Frame(master, borderwidth=1, bg=bg_color, highlightbackground=border_color, highlightthickness=1, relief=tk.SOLID, bd=0) #width=master.width, height=master.height,
-		frame.grid(row=0, column=0, sticky='nsew')
+		self.frame = tk.Frame(master, borderwidth=1, bg=bg_color, highlightbackground=border_color, highlightthickness=1, relief=tk.SOLID, bd=0) #width=master.width, height=master.height,
+		#frame.grid(row=0, column=0, sticky='nsew')
 		
 		self.relief = tk.GROOVE
 		self.font = main_font
 		self.big_font = big_font
 		
 		#Configuring the grid in the frame
-		configure_grid(frame, 9, 16)
+		configure_grid(self.frame, 9, 16)
 
-		fuel_frame = self.make_fuel_frame(frame)
+		fuel_frame = self.make_fuel_frame(self.frame)
 		fuel_frame.grid(row=0, column=0, rowspan=5, columnspan=3, sticky='nsew')
 		
-		water_t_frame = self.make_water_temperature_frame(frame)
+		water_t_frame = self.make_water_temperature_frame(self.frame)
 		water_t_frame.grid(row=0, column=12, rowspan=3, columnspan=4, sticky='nsew')
-		oil_t_frame = self.make_oil_temperature_frame(frame)
+		oil_t_frame = self.make_oil_temperature_frame(self.frame)
 		oil_t_frame.grid(row=3, column=12, rowspan=3, columnspan=4, sticky='nsew')
 
-		engine_dmg_frame = self.make_engine_damage_frame(frame)
+		engine_dmg_frame = self.make_engine_damage_frame(self.frame)
 		engine_dmg_frame.grid(row=5, column=0, rowspan=2, columnspan=3, sticky='nsew')
-		aero_dmg_frame = self.make_aero_damage_frame(frame)
+		aero_dmg_frame = self.make_aero_damage_frame(self.frame)
 		aero_dmg_frame.grid(row=7, column=0, rowspan=2, columnspan=3, sticky='nsew')
 
-		brake_dmg_frame = self.make_brake_damage_frame(frame)
+		brake_dmg_frame = self.make_brake_damage_frame(self.frame)
 		brake_dmg_frame.grid(row=6, column=3, rowspan=3, columnspan=6, sticky='nswe')
 
-		tire_temps_frame = self.make_tire_temperature_frame(frame)
+		tire_temps_frame = self.make_tire_temperature_frame(self.frame)
 		tire_temps_frame.grid(row=6, column=9, rowspan=3, columnspan=7, sticky='nsew')
 
-		gear_frame = self.make_gear_frame(frame)
+		gear_frame = self.make_gear_frame(self.frame)
 		gear_frame.grid(row=0, column=3, rowspan=6, columnspan=6, sticky='nsew')
 
-		lights_frame = self.make_lights_frame(frame)
+		lights_frame = self.make_lights_frame(self.frame)
 		lights_frame.grid(row=4, column=9, rowspan=2, columnspan=3, sticky='nsew')
 
 		#frame.bind('<Configure>', self.resize)
@@ -268,6 +289,9 @@ class screenPCars:
 	def resize(self, event):
 			pass
 			#resizeFont(self.lbl_fuel_remain)
+
+def show_frame_on_screen(frame):
+	frame.grid(row=0, column=0, sticky='nsew')
 
 def resizeFont():
 	winW, winH = get_window_dimensions()
