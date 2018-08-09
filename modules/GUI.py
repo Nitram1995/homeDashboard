@@ -272,7 +272,7 @@ class screenPCars:
 def resizeFont():
 	winW, winH = get_window_dimensions()
 
-	main_font.configure(size=40)
+	main_font.configure(size=25)
 
 	'''
 	lblFont = tkFont.Font(family='Helvetica', size=50, weight='bold')
