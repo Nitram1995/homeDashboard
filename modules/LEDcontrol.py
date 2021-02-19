@@ -45,8 +45,6 @@ FUEL_WARNING_POS = [1, 6]
 FLAG_POS = [0, 7]
 
 def setup_gpio():
-	blinkt.gpio_init()
-
 	GPIO.setmode(GPIO.BCM)
 	GPIO.setwarnings(False)
 
@@ -168,7 +166,7 @@ def hybrid_led(data):
 	hybrid = data.hybrid_pct
 
 	if hybrid == 100:
-		ifNoticeBlinkOn:
+		if NoticeBlinkOn:
 			for x in range(HYBRID_START_POS, HYBRID_LED_COUNT + 1):
 				blinkt.set_pixel(z, GREEN[0], GREEN[1], GREEN[2], brightness)
 		return
