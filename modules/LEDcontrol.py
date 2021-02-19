@@ -1,7 +1,4 @@
-import sys
-sys.path.append("/home/pi/Git/homeDashboard/modules")
-
-import blinkt16 as blinkt
+import blinkt
 import RPi.GPIO as GPIO
 from math import ceil
 import time
@@ -20,6 +17,7 @@ lastMedBlink = currTime
 lastFastBlink = currTime
 lastPulseBlink = currTime
 
+NoticeBlinkOn = True
 slowBlinkOn = True
 medBlinkOn = True
 fastBlinkOn = True
@@ -40,34 +38,25 @@ PURPLE = [200, 0, 128]
 
 RPM_CRITICAL = 97
 
-HYBRID_START_POS = 1
+HYBRID_START_POS = 2
 HYBRID_END_POS = 5
-FUEL_WARNING_POS = 6
-FLAG_POS = [0, 15]
-
-L_RED_LED = 8
-R_RED_LED = 23
-L_YELLOW_LED = 7
-R_YELLOW_LED = 24
-L_GREEN_LED = 1
-R_GREEN_LED = 25
+HYBRID_LED_COUNT = HYBRID_END_POS - HYBRID_START_POS + 1
+FUEL_WARNING_POS = [1, 6]
+FLAG_POS = [0, 7]
 
 def setup_gpio():
 	blinkt.gpio_init()
 
 	GPIO.setmode(GPIO.BCM)
 	GPIO.setwarnings(False)
-	GPIO.setup((L_RED_LED, R_RED_LED, L_YELLOW_LED,R_YELLOW_LED, L_GREEN_LED, R_GREEN_LED), GPIO.OUT)
 
 def test_all_leds():
-	GPIO.output((L_RED_LED, R_RED_LED, L_YELLOW_LED, R_YELLOW_LED, L_GREEN_LED, R_GREEN_LED), GPIO.HIGH)
 	for x in range(blinkt.NUM_PIXELS):
-		blinkt.set_pixel(x, WHITE[0], WHITE[1], WHITE[2], 0.2)
+		blinkt.set_pixel(x, WHITE[0], WHITE[1], WHITE[2], 0.05)
 	blinkt.show()
 
 	time.sleep(2)
 
-	GPIO.output((L_RED_LED, R_RED_LED, L_YELLOW_LED, R_YELLOW_LED, L_GREEN_LED, R_GREEN_LED), GPIO.LOW)
 	blinkt.clear()
 	blinkt.show()
 
@@ -86,6 +75,7 @@ def led_control(gameData):
 	'''(pit, flag, rpm_pct, lowFuel, 
 				flLock, frLock, hybrid=None):'''
 	global currTime
+	global NoticeBlinkOn
 	global slowBlinkOn
 	global medBlinkOn
 	global fastBlinkOn
@@ -111,14 +101,17 @@ def led_control(gameData):
 		if newTime >= (lastPulseBlink + PULSE_BLINK):
 			pulseBlinkOn = not pulseBlinkOn
 			lastPulseBlink = newTime
+		if newTime - currTime <= PULSE_BLINK:
+			NoticeBlinkOn = False
+		else:
+			NoticeBlinkOn = True
+
 
 
 		'''
 		The sooner an 'led' method is called the lower priority it has.
 		The later ones owerwrite the earlier ones.
 		'''
-
-		rpm_led(gameData)
 
 		if gameData.hybrid_pct != -1:
 			hybrid_led(gameData)
@@ -131,8 +124,6 @@ def led_control(gameData):
 
 		blinkt.show() #Sends signal to LEDs
 
-		seperate_leds_control(gameData)
-
 		currTime = newTime
 
 		if(exiting):
@@ -140,10 +131,6 @@ def led_control(gameData):
 			return
 
 		time.sleep(0.016)
-
-
-def seperate_leds_control(data):
-	GPIO.output(R_GREEN_LED, data.headlightsActive)
 
 
 def rpm_led(data):
@@ -181,15 +168,18 @@ def hybrid_led(data):
 	hybrid = data.hybrid_pct
 
 	if hybrid == 100:
-		x = 5
-	elif hybrid == 0:
+		ifNoticeBlinkOn:
+			for x in range(HYBRID_START_POS, HYBRID_LED_COUNT + 1):
+				blinkt.set_pixel(z, GREEN[0], GREEN[1], GREEN[2], brightness)
+		return
+	
+	if hybrid == 0:
 		x = 0
 	else:
-		x = int(ceil((hybrid / 20.0)))
+		x = int(ceil(hybrid / (100 / float(HYBRID_LED_COUNT))))
 
 	for z in range(HYBRID_START_POS, x + 1):
 		blinkt.set_pixel(z, GREEN[0], GREEN[1], GREEN[2], brightness)
-
 
 	for z in range(x + 1, (HYBRID_END_POS + 1)):
 		blinkt.set_pixel(z, 0, 0, 0, 0)
@@ -229,7 +219,8 @@ def car_warning_led(data):
 
 	#FUEL
 	if lowFuel == True:
-		blinkt.set_pixel(FUEL_WARNING_POS, RED[0], RED[1], RED[2], brightness)
+		for x in FUEL_WARNING_POS:
+			blinkt.set_pixel(x, RED[0], RED[1], RED[2], brightness)
 
 	
 	#Tire locking
