@@ -26,13 +26,13 @@ pulseBlinkOn = True
 r = 255
 g = 255
 b = 255
-brightness = 0.1
+brightness = 0.07
 
 
 RED = [255, 0, 0]
 YELLOW = [0, 0, 0]
-GREEN = [0, 255, 0]
-BLUE = [0, 0, 255]
+GREEN = [0, 200, 0]
+BLUE = [0, 0, 180]
 WHITE = [255, 255, 255]
 PURPLE = [200, 0, 128]
 
@@ -60,6 +60,7 @@ def test_all_leds():
 
 def cleanup_leds():
 	blinkt.clear()
+	blinkt.show()
 	GPIO.cleanup()
 	print "LED cleanup finished"
 
@@ -100,7 +101,7 @@ def led_control(gameData):
 			pulseBlinkOn = not pulseBlinkOn
 			lastPulseBlink = newTime
 		if newTime - currTime <= PULSE_BLINK:
-			NoticeBlinkOn = False
+			NoticeBlinkOn = True #FIXME: SHOULD WORK DIFFERENTLY
 		else:
 			NoticeBlinkOn = True
 
@@ -117,8 +118,6 @@ def led_control(gameData):
 		flag_led(gameData)
 
 		car_warning_led(gameData)
-
-		pit_lim_led(gameData)
 
 		blinkt.show() #Sends signal to LEDs
 
@@ -167,19 +166,19 @@ def hybrid_led(data):
 
 	if hybrid == 100:
 		if NoticeBlinkOn:
-			for x in range(HYBRID_START_POS, HYBRID_LED_COUNT + 1):
-				blinkt.set_pixel(z, GREEN[0], GREEN[1], GREEN[2], brightness)
+			for x in range(HYBRID_START_POS, HYBRID_END_POS + 1):
+				blinkt.set_pixel(x, GREEN[0], GREEN[1], GREEN[2], brightness / 2.0)
 		return
-	
+
 	if hybrid == 0:
 		x = 0
 	else:
 		x = int(ceil(hybrid / (100 / float(HYBRID_LED_COUNT))))
 
-	for z in range(HYBRID_START_POS, x + 1):
-		blinkt.set_pixel(z, GREEN[0], GREEN[1], GREEN[2], brightness)
+	for z in range(HYBRID_START_POS, HYBRID_START_POS + x):
+		blinkt.set_pixel(z, GREEN[0], GREEN[1], GREEN[2], brightness / 2.0)
 
-	for z in range(x + 1, (HYBRID_END_POS + 1)):
+	for z in range(HYBRID_START_POS + x + 1, (HYBRID_END_POS + 1)):
 		blinkt.set_pixel(z, 0, 0, 0, 0)
 
 
@@ -229,18 +228,18 @@ def car_warning_led(data):
 	
 	
 	if flLock == 1:
-		blinkt.set_pixel(FLAG_POS[0], PURPLE[0], PURPLE[1], PURPLE[2], brightness)
+		blinkt.set_pixel(FLAG_POS[0], PURPLE[0], PURPLE[1], PURPLE[2], brightness * 2.5)
 	elif flLock == 2:
 		if pulseBlinkOn:
-			blinkt.set_pixel(FLAG_POS[0], PURPLE[0], PURPLE[1], PURPLE[2], (brightness + 0.1))
+			blinkt.set_pixel(FLAG_POS[0], PURPLE[0], PURPLE[1], PURPLE[2], brightness * 2.5)
 		else:
 			blinkt.set_pixel(FLAG_POS[0], 0, 0, 0, 0)
 
 	if frLock == 1:
-		blinkt.set_pixel(FLAG_POS[1], PURPLE[0], PURPLE[1], PURPLE[2], brightness)
+		blinkt.set_pixel(FLAG_POS[1], PURPLE[0], PURPLE[1], PURPLE[2], brightness * 2.5)
 	elif frLock == 2:
 		if pulseBlinkOn:
-			blinkt.set_pixel(FLAG_POS[1], PURPLE[0], PURPLE[1], PURPLE[2], (brightness + 0.1))
+			blinkt.set_pixel(FLAG_POS[1], PURPLE[0], PURPLE[1], PURPLE[2], brightness * 2.5)
 		else:
 			blinkt.set_pixel(FLAG_POS[1], 0, 0, 0, 0)
 	
