@@ -11,11 +11,14 @@ SLOW_BLINK = 0.6
 MED_BLINK = 0.3
 FAST_BLINK = 0.15
 PULSE_BLINK = 0.05
+NOTICE_BLINK_ON_TIME = 0.05
+NOTICE_BLINK_OFF_TIME = 1.95
 
 lastSlowBlink = currTime
 lastMedBlink = currTime
 lastFastBlink = currTime
 lastPulseBlink = currTime
+lastNoticeBlinkChange = currTime
 
 NoticeBlinkOn = True
 slowBlinkOn = True
@@ -100,10 +103,13 @@ def led_control(gameData):
 		if newTime >= (lastPulseBlink + PULSE_BLINK):
 			pulseBlinkOn = not pulseBlinkOn
 			lastPulseBlink = newTime
-		if newTime - currTime <= PULSE_BLINK:
-			NoticeBlinkOn = True #FIXME: SHOULD WORK DIFFERENTLY
-		else:
+		
+		if NoticeBlinkOn and newTime >= lastNoticeBlinkChange + NOTICE_BLINK_ON_TIME:
+			NoticeBlinkOn = False
+			lastNoticeBlinkChange = newTime
+		elif not NoticeBlinkOn and newTime >= lastNoticeBlinkChange + NOTICE_BLINK_OFF_TIME:
 			NoticeBlinkOn = True
+			lastNoticeBlinkChange = newTime
 
 
 
@@ -165,9 +171,9 @@ def hybrid_led(data):
 	hybrid = data.hybrid_pct
 
 	if hybrid == 100:
-		if NoticeBlinkOn:
-			for x in range(HYBRID_START_POS, HYBRID_END_POS + 1):
-				blinkt.set_pixel(x, GREEN[0], GREEN[1], GREEN[2], brightness / 2.0)
+		hybrid_brightness = brightness if NoticeBlinkOn else brightness / 2.0
+		for x in range(HYBRID_START_POS, HYBRID_END_POS + 1):
+			blinkt.set_pixel(x, GREEN[0], GREEN[1], GREEN[2], hybrid_brightness)
 		return
 
 	if hybrid == 0:
