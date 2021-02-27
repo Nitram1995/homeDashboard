@@ -81,7 +81,10 @@ class GameData:
 			return False
 		'''
 
-		return (self.curr_fuel() < 10 and self.maxFuel > 0)
+		return (self.maxFuel > 0 and self.curr_fuel() < 10)
+
+	def lowFuelCritical(self):
+		return (self.maxFuel > 0 and self.curr_fuel() < 5)
 
 
 	def FL_locking_state(self):

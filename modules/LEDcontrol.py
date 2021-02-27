@@ -210,12 +210,20 @@ def flag_led(data):
 
 
 def car_warning_led(data):
+	lowFuelCritical = data.lowFuel()
 	lowFuel = data.lowFuel()
 	flLock = data.FL_locking_state()
 	frLock = data.FR_locking_state()
 
 	#FUEL
-	if lowFuel == True:
+	if lowFuelCritical:
+		if slowBlinkOn:
+			for x in FUEL_WARNING_POS:
+				blinkt.set_pixel(x, RED[0], RED[1], RED[2], brightness)
+		else:
+			for x in FUEL_WARNING_POS:
+				blinkt.set_pixel(x, RED[0], RED[1], RED[2], 0)
+	elif lowFuel:
 		for x in FUEL_WARNING_POS:
 			blinkt.set_pixel(x, RED[0], RED[1], RED[2], brightness)
 
