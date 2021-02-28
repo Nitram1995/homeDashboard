@@ -11,7 +11,7 @@ SLOW_BLINK = 0.6
 MED_BLINK = 0.3
 FAST_BLINK = 0.15
 PULSE_BLINK = 0.05
-NOTICE_BLINK_ON_TIME = 0.05
+NOTICE_BLINK_ON_TIME = 0.10
 NOTICE_BLINK_OFF_TIME = 1.95
 
 lastSlowBlink = currTime
@@ -82,6 +82,7 @@ def led_control(gameData):
 	global medBlinkOn
 	global fastBlinkOn
 	global pulseBlinkOn
+	global lastNoticeBlinkChange
 	global lastSlowBlink
 	global lastMedBlink
 	global lastFastBlink
@@ -216,7 +217,7 @@ def flag_led(data):
 
 
 def car_warning_led(data):
-	lowFuelCritical = data.lowFuel()
+	lowFuelCritical = data.low_Fuel_Critical()
 	lowFuel = data.lowFuel()
 	flLock = data.FL_locking_state()
 	frLock = data.FR_locking_state()

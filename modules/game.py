@@ -83,7 +83,7 @@ class GameData:
 
 		return (self.maxFuel > 0 and self.curr_fuel() < 10)
 
-	def lowFuelCritical(self):
+	def low_Fuel_Critical(self):
 		return (self.maxFuel > 0 and self.curr_fuel() < 5)
 
 

@@ -6,7 +6,7 @@ import LEDcontrol as LED
 import argparse
 import signal
 import time
-import thread
+import threading
 
 parser = argparse.ArgumentParser()
 
@@ -25,9 +25,11 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     gameData = game.GameData()
-    gameData.fuel = args.fuel
+    gameData.maxFuel = 100
+    gameData.fuel       = args.fuel / 100.0
     gameData.hybrid_pct = args.hybrid
 
-    thread.start_new_thread(LED.init_and_run, (gameData,))
+    LED_thread = threading.Thread(target=LED.init_and_run, args=(gameData,))
+    LED_thread.run()
 
     signal.signal(signal.SIGINT, exit_app)
