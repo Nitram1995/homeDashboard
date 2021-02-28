@@ -1,33 +1,48 @@
 import sys
-sys.path.append("/home/pi/Desktop/homeDashboard/modules")
-#sys.path.append("/home/martin/Programming/homeDashboard/modules")
-
-import game
-import dataParser
-import udp_client as UDP
-import LEDcontrol as LED
-#import button_control as buttons
-#import GUI
-#import testGUI as GUI
-import socket
-import time
-#import _thread as thread
+import argparse
 import thread
 import signal
+import socket
+import time
+#import button_control as buttons
 
-PCARS = game.GameUDP('', 5606, 1367)
+parser = argparse.ArgumentParser()
 
-def setup_game_mode(currGame):
-	UDP.setup_client(currGame.host, currGame.port, currGame.exp_length)
+led_thread = None
+game_trhead =  None
+
+def set_system(system):
+	if system == 'pi':
+		sys.path.append("/home/pi/Desktop/homeDashboard/modules")
+	elif system == 'desktop':
+		sys.path.append("/home/martin/Programming/homeDashboard/modules")
 
 
-gameModeIsSetup = False
-telemetry = game.GameData()
-setup_game_mode(PCARS) #Should be setup later to take multiple games
+def exit_app(sig, frame):
+	print("Exiting via 'exit_app'")
+	if led_thread: LED.exiting = True
+	time.sleep(1)
+	sys.exit()
 
 
-def get_and_handle_data(args):
-	telemetry = args
+def setup_game_modules():
+	global telemetry, dataParser
+	import game
+	import dataParser
+	import udp_client as UDP
+
+	PCARS = game.GameUDP('', 5606, 1367)
+
+	def setup_game_mode(currGame):
+		UDP.setup_client(currGame.host, currGame.port, currGame.exp_length)
+
+	telemetry = game.GameData()
+	setup_game_mode(PCARS)
+
+	return (telemetry, dataParser, UDP)
+
+
+def get_and_handle_data(UDP, dataParser, telemetry):
 	while True:
 		try:
 			data = UDP.get_udp_data()
@@ -36,36 +51,41 @@ def get_and_handle_data(args):
 		else:
 			dataParser.PCars2_protocol1_parser(data, telemetry)
 
-		#print (telemetry.gear, telemetry.RPM, telemetry.headlightsActive, telemetry.flag)
-		#if(telemetry.brake > 0):
-			#print(telemetry.brake, telemetry.FL_tire_rps, telemetry.FL_locking_state(), telemetry.RPM_pct())
-		#print(telemetry.hybrid_pct, telemetry.gear)
-		#time.sleep(0.020)
 
-
-def update_gui():
-	GUI.update_variables(telemetry)
+def run_gui():
+	def update_gui():
+		GUI.update_variables(telemetry)
+	
 	GUI.root.after(50, update_gui)
+	GUI.root_setup(GUI.root)
+	GUI.screenPCars(GUI.root)
+	GUI.root.after(1000, update_gui)
+	GUI.root.mainloop()
 
-def exit_app(sig, frame):
-	print("Exiting via 'exit_app'")
-	LED.exiting = True
-	time.sleep(1) #Look away kids.. This is NOT how its done properly
-	sys.exit()
 
-#buttons.buttons_init()
-#buttons.button_interupt_init(buttons.BTN_BLK, exit_app)
+if __name__ == '__main__':
+	parser.add_argument("--gui", action='store_true', help="Run tkinter GUI feature")
+	parser.add_argument("--led", action='store_true', help="Run LED features. Requires GPIO functionality")
+	parser.add_argument("-s", "--system", choices=['pi', 'desktop'], default="pi", help="The system that the program is run on")
 
-thread.start_new_thread(get_and_handle_data, (telemetry,))
-thread.start_new_thread(LED.init_and_run, (telemetry,))
+	args = parser.parse_args()
 
-#GUI.root_setup(GUI.root)
-#GUI.frame = GUI.screenGeneralMessage(GUI.root, "testy", 123.5, "red", "white") 
-#GUI.screenPCars(GUI.root)
-#GUI.root.after(1000, update_gui)
-#GUI.root.mainloop()
+	set_system(args.system)
+	
+	telemetry, dataParser, UDP = setup_game_modules()
+	game_trhead = thread.start_new_thread(get_and_handle_data, (UDP, dataParser, telemetry))
 
-signal.signal(signal.SIGINT, exit_app)
+	if args.led:
+		import LEDcontrol as LED
+		led_thread = thread.start_new_thread(LED.init_and_run, (telemetry,))
 
-# Sleeping until interrupted
-signal.pause()
+	#buttons.buttons_init()
+	#buttons.button_interupt_init(buttons.BTN_BLK, exit_app)
+
+	if args.gui:
+		import GUI
+		run_gui()
+	else:
+		# Sleeping until interrupted
+		signal.signal(signal.SIGINT, exit_app)
+		signal.pause()
